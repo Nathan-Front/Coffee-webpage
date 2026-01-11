@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <title>Cart</title>
+  </head>
+  <body class="service-body-container">
+    <div class="header-nav-container">
+      <header>
+        <img src="images/index/logo/coffee-cup.png" alt="webpage-logo" />
+        <h1>UrKofi</h1>
+      </header>
+      <nav class="webpage-navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="coffeeBeans.html">Coffee Beans</a></li>
+          <li><a href="service.html">Services</a></li>
+          <li><a href="aboutus.html">About Us</a></li>
+          <li>
+            <p>
+              <a href="login.html">Login</a> or
+              <a href="signup.html">Sign up</a>
+            </p>
+          </li>
+        </ul>
+        <div class="user-container">
+          <div>
+            <span>Hi</span>
+            <p>Guest</p>
+          </div>
+          <button>Sign out</button>
+        </div>
+      </nav>
+    </div>
+    <main>
+      <h2 class="cart-title">
+        Your cart (<span id="cart-item-counter">0</span> items)
+      </h2>
+      <section class="item-in-cart-container" id="cart-item-display-container">
+        <!--<ul>
+          <li>
+            <div>
+              <img
+                src="./images/CoffeeBeans/ThirdSection/doppio.png"
+                alt="cart item"
+              />
+            </div>
+            <div class="item-cart-description">
+              <h3>Product name</h3>
+              <p>Product description</p>
+              <span>Shipping fee: $1.50</span>
+              <button>Delete</button>
+            </div>
+          </li>
+          <li>
+            <h3>Price: $<span>7.50</span></h3>
+          </li>
+          <li>
+            <button>-</button>
+            <span>1</span>
+            <button>+</button>
+          </li>
+          <li>
+            <h3>Total: $<span>7.50</span></h3>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <div>
+              <img
+                src="./images/CoffeeBeans/ThirdSection/doppio.png"
+                alt="cart item"
+              />
+            </div>
+            <div class="item-cart-description">
+              <h3>Product name</h3>
+              <p>Product description</p>
+              <span>Free Shipping</span>
+              <button>Delete</button>
+            </div>
+          </li>
+          <li>
+            <h3>Price: $<span>7.50</span></h3>
+          </li>
+          <li>
+            <button>-</button>
+            <span>1</span>
+            <button>+</button>
+          </li>
+          <li>
+            <h3>Total: $<span>7.50</span></h3>
+          </li>
+        </ul>-->
+      </section>
+      <section class="cart-checkout-container">
+        <div id="cart-compute-fee">
+          <p>Sub total: $<span id="sub-total">7.50</span></p>
+          <p>Tax: $<span id="tax">1.50</span></p>
+          <p>Shipping fee: $<span id="shipping-fee">1.50</span></p>
+          <p>Grand Total: $<span id="grand-total">10.50</span></p>
+          <button>Proceed to Checkout</button>
+        </div>
+      </section>
+    </main>
+    <script src="js/login.js"></script>
+    <script src="js/coffeeBeans.js"></script>
+  </body>
+</html>
