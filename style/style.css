@@ -1004,7 +1004,8 @@ footer{
 .plus-minus-button-container> button:hover,
 .article-right-panel-button-list > button:hover,
 .product-sale-item-description > div > button:hover,
-.other-sale-item-description > div > button:hover{
+.other-sale-item-description > div > button:hover,
+#checkout-button{
     cursor: pointer;
 }
 
@@ -1014,7 +1015,7 @@ footer{
     background-color: white;
 }
 .service-first-section-container{
-    background-image: url('../images/FirstSection/cup-coffee-with-beans-anise.jpg');
+    background-image: url('../images/services/firstSection/vecteezy_roasted-coffee-beans-with-deep-brown-tones-perfect-for_68693295.jpg');
     background-size: 100% 600px;
     background-repeat: no-repeat;
     background-position: center;
@@ -1172,7 +1173,7 @@ address> a:hover{
     background-color: goldenrod;
 }
 .bread-container-text{
-    background-image: url('../images/Services/notallcoffee/breadbackground.jpg');
+    background-image: url('../images/services/thirdSection/vecteezy_fresh-bread-on-dark-background_5042859.jpg');
     background-size: 100% 500px;
     background-position: center;
     background-repeat: no-repeat;
@@ -1610,7 +1611,7 @@ address> a:hover{
 }
 .single-window-table> li> label> span{
     position: absolute;
-    top: 35%;
+    top: 0;
     left: 30%;
     padding: 0;
     margin: 0;
@@ -1645,8 +1646,8 @@ address> a:hover{
 }
 .double-seat-window-table> li> label> span{
     position: absolute;
+    top: 15%;
     left: 30%;
-    top: 40%;
     font-size: clamp(1.3rem, 1.4vw, 1.8rem);
 }
 .share-seat-table{
@@ -1658,7 +1659,7 @@ address> a:hover{
 .share-seat-table> h3{
     position: absolute;
     top: 50%;
-    left: 50%;
+    left: 45%;
     font-size: clamp(1.5rem, 1.6vw, 2rem);
 }
 .group-center-table{
@@ -1682,7 +1683,7 @@ address> a:hover{
 }
 .four-seats> label> span{
     position: absolute;
-    top: 45%;
+    top: 25%;
     left: 48%;
     font-size: clamp(1.3rem, 1.4vw, 1.8rem);
 }
@@ -1701,7 +1702,7 @@ address> a:hover{
 }
 .six-seats> label> span{
     position: absolute;
-    top: 47%;
+    top: 25%;
     left: 48%;
     font-size: clamp(1.3rem, 1.4vw, 1.8rem);
 }
@@ -1712,7 +1713,7 @@ address> a:hover{
     position: relative;
     width: 100%;
 }
-.entrance-exit> a{
+.entrance-exit> button{
     position: absolute;
     background-color: goldenrod;
     font-size: clamp(1rem, 2.5vw, 3rem);
@@ -1721,11 +1722,12 @@ address> a:hover{
     color: black;
     border-radius: 0.25em;
 }
-.entrance-exit> a:hover{
+.entrance-exit> button:hover{
     color: goldenrod;
     background-color: black;
     background-color: rgba(0,0,0, 0.8);
     transition: 0.3s;
+    cursor: pointer;
 }
 .entrance-exit> h3{
      font-size: clamp(1rem, 2.3vw, 3rem);
@@ -1744,6 +1746,90 @@ address> a:hover{
 .notice-section> p> a{
     color: white;
 }
+.single-window-table> li> label:hover,
+.double-seat-window-table> li> label:hover,
+.group-center-table> li> label:hover{
+    cursor: pointer;
+    font-weight: bolder;
+    color: goldenrod;
+}
+.seat-full {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.group-center-table span {
+    display: block;
+    font-size: 0.8rem;
+    color: #000000;
+}
+
+
+
+body.no-scroll {
+  overflow: hidden;
+}
+.form-panel-container{
+    width: 100vw;
+    height: 100vh;
+    padding-bottom: 1em;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    grid-gap: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: whitesmoke;
+    z-index: 9;
+    animation: reserve 300ms ease-in-out;  
+    transform: translate(50% 50%);
+}
+@keyframes reserve {
+    from{
+        top: -100px;
+    }
+    to{
+        top: 0;
+    }
+}
+.user-name-logged{
+    width: 50%;
+    margin: 0 auto;
+    padding: 0 0 30px 0;
+}
+#reserveForm{
+    width: 50%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 0 1em 1em 1em;
+    color: black;
+    background-color: white;
+    z-index: 999;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+#reserveForm> label{
+    padding-top: 1em;
+}
+.reserve-button-container{
+    width: 100%;
+    display: flex;
+}
+.submit-reserve-button,
+.close-reserve-button{
+    width: 30%;
+    margin: 0 auto;
+    background-color: goldenrod;
+    border: none;
+    padding: 10px 0;
+    border-radius: 0.25em;
+    box-shadow: 2px 3px 6px #85746b;
+}
+
+
+
 
 /*Signup HTML*/
 .sign-up-form{

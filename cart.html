@@ -33,9 +33,9 @@
         <div class="user-container">
           <div>
             <span>Hi</span>
-            <p>Guest</p>
+            <p class="logged-in-user">Guest</p>
           </div>
-          <button>Sign out</button>
+          <button type="button" class="logout-button">Sign out</button>
         </div>
       </nav>
     </div>
@@ -107,7 +107,9 @@
           <p>Tax: $<span id="tax">1.50</span></p>
           <p>Shipping fee: $<span id="shipping-fee">1.50</span></p>
           <p>Grand Total: $<span id="grand-total">10.50</span></p>
-          <button>Proceed to Checkout</button>
+          <button type="button" id="checkout-button">
+            Proceed to Checkout
+          </button>
         </div>
       </section>
     </main>

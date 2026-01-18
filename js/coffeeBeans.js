@@ -465,7 +465,24 @@ function displayGrandTotal(){
 }
 document.addEventListener("DOMContentLoaded", displayGrandTotal);
 
-
+function checkoutCart(){
+    const checkoutBtn = document.getElementById("checkout-button");
+    const userLoggedIn = JSON.parse(localStorage.getItem("loggedInUser"));
+    let cartContent = JSON.parse(localStorage.getItem("cartContent"));
+    if(!cartContent || !Array.isArray(cartContent.items)){
+        return;
+    }
+    checkoutBtn.addEventListener("click", () =>{
+        if(!userLoggedIn){
+            alert("Must be login");
+        } else if (cartContent.cartCounter === 0){
+            alert("No item in the cart");
+        } else {
+            alert("Total payment: $" + document.getElementById("grand-total").textContent);
+        }
+    });
+}
+document.addEventListener("DOMContentLoaded", checkoutCart);
 
 
 const carouselWrapper = document.querySelector(".product-sale-list-item-container");
