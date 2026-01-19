@@ -1405,7 +1405,7 @@ address> a:hover{
     justify-content: end;
 }
 .about-us-fourth-section-container{
-    background-image: url('../images/AboutUs/roastcoffee.png');
+    background-image: url('../images/aboutUs/fourthSection/roast.png');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -1433,6 +1433,7 @@ address> a:hover{
 }
 .about-us-fourth-section-container> h3{
     color: whitesmoke;
+    background-color: rgba(0, 0, 0, 0.4);
 }
 .about-us-fourth-section-container> ul{
     display: flex;
@@ -1442,6 +1443,10 @@ address> a:hover{
 }
 .about-us-fourth-section-container> ul> li> a{
     color: whitesmoke;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.about-us-fourth-section-container> ul> li> a:hover{
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
 /*Cart HTML*/
