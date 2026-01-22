@@ -138,6 +138,8 @@ header img{
         bottom: 0;
         left: 0;
         background-color: goldenrod;
+        z-index: 999;
+        border-top: 1px black solid;
     }
     #burger-close{
         display: none;
@@ -631,6 +633,9 @@ footer{
 @media only screen and (max-width: 540px){
 .first-section-container{
     height: clamp(200px, 250px, 300px); /**/
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 .first-section-container-text> h2,
 .first-section-container-text> p,
@@ -690,8 +695,8 @@ footer{
 
     min-width: 100%;
     margin-top: 0;/**/
-    border: 1px red solid;
     transition: transform 0.4s ease;
+    
 }
 .coffee-selection-text.selectedCoffee{
     display: flex;
@@ -746,10 +751,12 @@ footer{
     height: clamp(170px, 20vw, 300px);  /**/
 }
 .mobile-slider-dots{
-        width: 100%;
-        display: inline-block;
-        text-align: center;
-        margin: 0 0% 0% 0%;
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    margin: auto 0;
+    border-top: 1px black solid;
+    border-bottom: 1px black solid;
 }
 .mobile-dot{
     display: inline-block;
@@ -761,7 +768,7 @@ footer{
     border: 1px black solid;
 }
 .mobile-dot.activeCoffee{
-        background: goldenrod;
+    background: goldenrod;
 }
 .third-section-container{
     display: flex;
@@ -769,12 +776,10 @@ footer{
     padding: 50px 0;
     justify-content: center;
     justify-items: center;
-
-    border: 1px red solid;
 }
 .third-section-container> h2{
    margin: 0 auto;
-   padding-bottom: 50px;
+   padding-bottom: 25px;/**/
     width: fit-content;
 }
 .third-sub-container{
@@ -796,7 +801,6 @@ footer{
     grid-column-end: 2; /**/
     grid-row-start: 1; /**/
     grid-row-end: 2; /**/
-    border: 1px red solid;
 }
 .third-process-container> img{
     margin: 0 0 0 2.5em; /**/
@@ -817,12 +821,11 @@ footer{
     grid-column-end: 3; /**/
     grid-row-start: 1; /**/
     grid-row-end: 2; /**/
-    border: 1px red solid;
 }
 .third-section-center-image> img{
-    width: clamp(150px, 30vw, 600px);
-    height: clamp(200px, 40vw, 700px);
-    margin-left: 2em; /**/
+    width: clamp(180px, 30vw, 600px);/**/
+    height: clamp(250px, 40vw, 700px);/**/
+    margin: auto; /**/
 }
 .third-method-container{
     display: flex;
@@ -841,7 +844,7 @@ footer{
 .third-method-container> ul{
     margin: 0;
     padding: 0;
-    width: 90%;
+    width: 100%;/**/
 }
 .third-method-container> ul> li{
     margin-bottom: 10px;
@@ -855,13 +858,17 @@ footer{
     flex-direction: column;
     justify-content: center;
     gap: clamp(0em, 2vw, 2em);
-    padding: 50px 0;
+    padding: 0;/**/
+    border-top: 1px black solid;
 }
 .fourth-coffee-selection-text{
     display: flex;
     flex-direction: column;
     width: fit-content;
     margin: 0 auto;
+}
+.fourth-coffee-selection-text> h2{
+    padding-top: 10px;/**/
 }
 .fourth-coffee-selection-text> p{
     margin-left: 0; /**/
@@ -874,7 +881,7 @@ footer{
 .fourth-coffee-selection-text-images-container{
     display: flex;
     justify-content: center;
-    gap: 1em; /**/
+    gap: 0; /**/
     padding-bottom: 10px;
 
     display: grid;
@@ -882,8 +889,8 @@ footer{
     grid-template-rows: auto auto;
 }
 .fourth-coffee-selection-text-images{
-    width: clamp(200px, 15vw, 200px);/**/
-    height: clamp(250px, 20vw, 300px);/**/
+    width: clamp(150px, 13vw, 200px);/**/
+    height: clamp(200px, 20vw, 300px);/**/
 }
 .fifth-section-container{
     width: 100%;
@@ -891,7 +898,7 @@ footer{
     flex-direction: column;
     justify-content: center;
     background-color: #6F4E37;
-    padding: 50px 0 80px 0;
+    padding: 20px 0 80px 0;/**/
     position: relative;
     overflow: hidden;
 }
@@ -899,7 +906,8 @@ footer{
      width: fit-content;
      margin: 0 auto;
      color: whitesmoke;
-     padding-bottom: 50px;
+     padding-bottom: 10px;/**/
+     text-align: center;/**/
 }
 .carousel-viewport {
     width: 95%;
@@ -963,7 +971,7 @@ blockquote{
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 0px;/**/
 }
 .slider-dots button {
   width: 10px;
@@ -975,6 +983,19 @@ blockquote{
   padding: 0;
 }
 footer{
+    display: none;
+}
+.temp-container{
+    position: fixed;
+    min-width: 100vw;
+    min-height: 100vh;
+    top: 0;
+    left: 0;
+    background-color: goldenrod;
+    overflow: hidden;
+    z-index: 99;
+}
+.hideInputField{
     display: none;
 }
 }
