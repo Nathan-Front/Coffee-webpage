@@ -22,7 +22,7 @@
         <h1>UrKofi</h1>
       </header>
       <nav class="webpage-navigation">
-        <ul>
+        <ul id="navigation-menu">
           <li><a href="#">Home</a></li>
           <li><a href="coffeeBeans.html">Coffee Beans</a></li>
           <li><a href="service.html">Services</a></li>
@@ -183,7 +183,10 @@
             </li>
           </ul>
         </div>
-        <div class="coffee-selection-text selectedCoffee" id="espresso">
+        <div
+          class="coffee-selection-text selectedCoffee activeCoffee"
+          id="espresso"
+        >
           <h3>Espresso</h3>
           <p class="coffee-text">
             Made by forcing a small amount of nearly boiling water quickly
@@ -356,13 +359,13 @@
           <div class="coffee-selection-text-images">
             <img
               class="coffee-images"
-              src="./images/SecondSection/espresso-1.png"
+              src="./images/index/secondSection/cappuccino1.jpg"
               alt="cappuccino 1"
               loading="lazy"
             />
             <img
               class="coffee-images"
-              src="./images/SecondSection/espresso-2.png"
+              src="./images/index/secondSection/cappuccino2.jpeg"
               alt="cappuccino 2"
               loading="lazy"
             />
@@ -378,13 +381,13 @@
           <div class="coffee-selection-text-images">
             <img
               class="coffee-images"
-              src="./images/SecondSection/espresso-1.png"
+              src="./images/index/secondSection/flatwhite1.jpg"
               alt="flat white 1"
               loading="lazy"
             />
             <img
               class="coffee-images"
-              src="./images/SecondSection/espresso-2.png"
+              src="./images/index/secondSection/flatwhite2.jpg"
               alt="flat white 2"
               loading="lazy"
             />
@@ -400,13 +403,13 @@
           <div class="coffee-selection-text-images">
             <img
               class="coffee-images"
-              src="./images/SecondSection/espresso-1.png"
+              src="./images/index/secondSection/cafeaulait1.jpg"
               alt="cafe au lait 1"
               loading="lazy"
             />
             <img
               class="coffee-images"
-              src="./images/SecondSection/espresso-2.png"
+              src="./images/index/secondSection/cafeaulait2.jpg"
               alt="cafe au lait 2"
               loading="lazy"
             />
@@ -422,13 +425,13 @@
           <div class="coffee-selection-text-images">
             <img
               class="coffee-images"
-              src="./images/SecondSection/espresso-1.png"
+              src="./images/index/secondSection/cortado1.jpg"
               alt="cortado 1"
               loading="lazy"
             />
             <img
               class="coffee-images"
-              src="./images/SecondSection/espresso-2.png"
+              src="./images/index/secondSection/cortado2.jpg"
               alt="cortado 2"
               loading="lazy"
             />
@@ -444,13 +447,13 @@
           <div class="coffee-selection-text-images">
             <img
               class="coffee-images"
-              src="./images/SecondSection/espresso-1.png"
+              src="./images/index/secondSection/machiato1.jpg"
               alt="macchiato 1"
               loading="lazy"
             />
             <img
               class="coffee-images"
-              src="./images/SecondSection/espresso-2.png"
+              src="./images/index/secondSection/machiato2.jpg"
               alt="macchiato 2"
               loading="lazy"
             />
@@ -472,23 +475,23 @@
             id. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Culpa
             consequatur incidunt assumenda id.
           </p>
-          <div class="coffee-selection-text-images">
+          <div class="coffee-selection-text-images" id="mocha-images">
             <img
               class="coffee-images"
-              src="./images/SecondSection/espresso-1.png"
+              src="./images/index/secondSection/mocha1.jpg"
               alt="mocha 1"
               loading="lazy"
             />
             <img
               class="coffee-images"
-              src="./images/SecondSection/espresso-2.png"
+              src="./images/index/secondSection/mocha2.jpeg"
               alt="mocha 2"
               loading="lazy"
             />
           </div>
         </div>
       </section>
-
+      <div class="mobile-slider-dots"></div>
       <section class="third-section-container">
         <h2>Brew Your Coffee</h2>
         <div class="third-sub-container">
@@ -615,7 +618,7 @@
 
       <section class="fifth-section-container">
         <h2>Here's what our customers say</h2>
-        <button class="prev">‹</button>
+        <button type="button" class="prev">‹</button>
         <div class="carousel-viewport">
           <ul class="customer-testimony-container">
             <li class="customer-testimony">
@@ -747,7 +750,7 @@
           </ul>
           <div class="slider-dots"></div>
         </div>
-        <button class="next">›</button>
+        <button type="button" class="next">›</button>
       </section>
     </main>
 
@@ -854,6 +857,55 @@
         </div>
       </div>
     </footer>
+
+    <nav id="mobile-nav">
+      <div class="mobile-icons">
+        <img
+          id="mobile-home-button"
+          src="./images/mobileLogo/home/home.svg"
+          alt="mobile home button"
+        />
+        <p>Home</p>
+      </div>
+      <div class="mobile-icons">
+        <img
+          id="mobile-beans-button"
+          src="images/mobileLogo/order/cart-check-svgrepo-com.svg"
+          alt="beans store"
+        />
+        <p>Store</p>
+      </div>
+      <div class="mobile-icons">
+        <img
+          id="mobile-reserve-button"
+          src="images/mobileLogo/seat/seat-kitchen-svgrepo-com.svg"
+          alt="reservation"
+        />
+        <p>Reservation</p>
+      </div>
+      <div class="mobile-icons">
+        <img
+          id="mobile-user-button"
+          src="images/mobileLogo/user/user-icon-svgrepo-com.svg"
+          alt="user"
+        />
+        <p>User</p>
+      </div>
+      <div>
+        <div id="burger" class="mobile-icons">
+          <img src="images/mobileLogo/burger/icon-hamburger.svg" alt="" />
+        </div>
+        <div id="burger-close">
+          <img src="images/mobileLogo/burger/icon-close.svg" alt="" />
+        </div>
+      </div>
+      <!--<ul id="mobile-navigation-menu">
+        <li><a href="#">Home</a></li>
+        <li><a href="coffeeBeans.html">Coffee Beans</a></li>
+        <li><a href="service.html">Services</a></li>
+        <li><a href="aboutus.html">About Us</a></li>
+      </ul>-->
+    </nav>
     <script src="js/login.js" defer></script>
     <script src="js/home.js" defer></script>
   </body>

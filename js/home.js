@@ -50,12 +50,18 @@ const slides = document.querySelectorAll('.customer-testimony');
 const prevBtn = document.querySelector('.prev');
 const nextBtn = document.querySelector('.next');
 
-const visibleSlides = 3; //Initial slider display 
+let visibleSlides; //Initial slider display 
+function initialTestimonySlide(){
+  visibleSlides = window.innerWidth > 540 ? 3 : 1;
+}
+initialTestimonySlide();
+document.addEventListener("DOMContentLoaded", initialTestimonySlide);
 let currentIndex = 0;
 let slideWidth;
-
+let currentIndex2 = 0;
+let mobileFunction;
 function updateSlideWidth() {
-  slideWidth = slides[0].offsetWidth + 20; //Includes the space between each sliders
+  slideWidth = slides[0].offsetWidth + 20; //Includes space between each sliders
 }
 
 function updateCarousel() {
@@ -90,15 +96,14 @@ prevBtn.addEventListener('click', () => {
 const dotsContainer = document.querySelector(".slider-dots");
 const totalDots = slides.length - visibleSlides + 1;
 
-function createDots(){
+function createDots(){  
   dotsContainer.innerHTML = "";
-
   for ( let i = 0; i < totalDots; i++ ) {
     const dot = document.createElement("button");
-
     dot.addEventListener("click", () => {
-      currentIndex = i;
-      updateCarousel();
+      if(window.innerWidth <= 540) return;
+        currentIndex = i;
+        updateCarousel();
       //updateActiveDot();
     });
     dotsContainer.appendChild(dot);
@@ -109,8 +114,12 @@ function createDots(){
 function updateActiveDot(){
   const dots = dotsContainer.querySelectorAll("button");
 
-  dots.forEach((dot, index) =>{
-    dot.classList.toggle("active", index === currentIndex);
+  dots.forEach((dot, index = index) =>{
+    if(window.innerWidth > 540){
+       dot.classList.toggle("active", index === currentIndex);
+    }else{
+      dot.classList.toggle("active", index === currentIndex2);
+    }
   })
 }
 
@@ -120,6 +129,137 @@ window.addEventListener('load', () => {
   createDots();
 });
 
+window.__mobileUpperSliderActive = false;
+window.__mobileMainSliderActive = false;
+function mobileDesktopInit() {
+    const isMobile = window.innerWidth <= 540;
+    if (isMobile) {
+        indexPageSecondSection();
+        indexPageFifthSection();
+    } else {
+       // enableDesktop();
+    }
+}
+document.addEventListener("DOMContentLoaded", mobileDesktopInit);
+window.addEventListener("resize", mobileDesktopInit);
+function indexPageSecondSection(){
+  const carouselContainer = document.querySelector(".second-section-container");
+  const carouselItem = document.querySelectorAll(".coffee-selection-text");
+  let index = 0;
+  let startX = 0;
+  let isDragging = false;
 
+  const dots = document.querySelector(".mobile-slider-dots");
+  dots.innerHTML = "";
+  carouselItem.forEach((_, i) =>{
+    const span = document.createElement("span");
+    span.className = "mobile-dot" + (i === 0 ? " activeCoffee": "");
+    span.addEventListener("click", ()=>goToSlide(i));
+    dots.appendChild(span);
+  });
+  
+  const spanDots = document.querySelectorAll(".mobile-dot");
+  function updateSlider(){
+    carouselItem.forEach((s, _) =>{
+      s.style.transform =  `translateX(${-index * 100}%)`; 
+    });
+    spanDots.forEach((d, i) =>{
+      d.classList.toggle('activeCoffee', i === index);
+    });
+  }
+  function goToSlide(i){
+    index = i;
+    updateSlider();
+  }
+  carouselContainer.addEventListener("touchstart", e =>{
+    startX = e.touches[0].clientX;
+    isDragging = true;}, 
+    { passive: true } 
+  );
+  carouselContainer.addEventListener('touchmove', e => {
+    if (!isDragging) return;}, 
+    { passive: true }
+  );
+  carouselContainer.addEventListener("touchend", e =>{
+    if(!isDragging) return;
+    const endX = e.changedTouches[0].clientX;
+    const diff = endX - startX;
+    if(diff > 50){
+      index = index === 0 ? carouselItem.length - 1 : index - 1;
+    }else if (diff < -50) {
+        index = (index + 1) % carouselItem.length;
+    }
+    updateSlider();
+    isDragging = false;
+  });
+  
+}
+window.addEventListener("resize", indexPageSecondSection);
+document.addEventListener("DOMContentLoaded", indexPageSecondSection);
 
+function getSlideMetrics(){
+  const testimonyContainer = document.querySelector(".customer-testimony-container");
+  const testimonySlide = document.querySelectorAll(".customer-testimony");
+  const slideWidth = Array.from(testimonySlide);
+  const slide = slideWidth[0];
+  const slideRec = slide.getBoundingClientRect();
+  const style = getComputedStyle(slide);
+  const margLeft = parseFloat(style.marginLeft) || 0;
+  const margRight = parseFloat(style.marginRight) || 0;
+  const perSlideWidth = slideRec.width;
+  const itemWidth = getComputedStyle(testimonyContainer)
+  let gap = parseFloat(itemWidth.gap) || 0;
+  const wrapper = document.querySelector(".carousel-viewport");
+  if(itemWidth.gap.includes("%")){
+    const wrapWidth = wrapper.getBoundingClientRect().width;
+    gap = wrapWidth * (parseFloat(itemWidth.gap) / 100);
+  }
+  const fullWidth = perSlideWidth + margLeft + margRight + gap;
+  
+  return {fullWidth, perSlideWidth};
+}
+function indexPageFifthSection(){
+  const testimonyContainer = document.querySelector(".customer-testimony-container");
+  const testimonySlide = document.querySelectorAll(".customer-testimony");
+  let index = 0;
+  let startX = 0;
+  let isDragging = false;
+ 
+  const {fullWidth, perSlideWidth} = getSlideMetrics();
+  console.log(fullWidth);
+   console.log(perSlideWidth);
+  updateSlider();
+  function updateSlider(){
+    testimonySlide.forEach((s, _) =>{
+      s.style.transform = `translateX(${-index * fullWidth}px)`;
+    });
+  }
 
+  testimonyContainer.addEventListener("touchstart", e =>{
+    startX = e.touches[0].clientX;
+    isDragging = true},
+    {passive: true}
+  );
+  testimonyContainer.addEventListener("touchmove", e =>{
+    if(!isDragging)return;},
+    {passive:true}
+  );
+  testimonyContainer.addEventListener("touchend", e =>{
+    if(!isDragging) return;
+    const endX = e.changedTouches[0].clientX;
+    const diff = endX - startX;
+    if(diff > 50){
+      index = index === 0 ? testimonySlide.length - 1 : index - 1;
+    } else if(diff < -50){
+      index = (index + 1) % testimonySlide.length;
+    }
+    updateSlider();
+    isDragging = false;
+    updateActiveDot();
+    createDots();
+    currentIndex2 = index;
+  });
+  
+}
+window.addEventListener("resize", indexPageFifthSection);
+document.addEventListener("DOMContentLoaded", indexPageFifthSection);
