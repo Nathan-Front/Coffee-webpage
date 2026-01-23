@@ -467,6 +467,7 @@ document.addEventListener("DOMContentLoaded", displayGrandTotal);
 
 function checkoutCart(){
     const checkoutBtn = document.getElementById("checkout-button");
+    if(!checkoutBtn) return;
     const userLoggedIn = JSON.parse(localStorage.getItem("loggedInUser"));
     let cartContent = JSON.parse(localStorage.getItem("cartContent"));
     if(!cartContent || !Array.isArray(cartContent.items)){

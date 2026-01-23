@@ -226,8 +226,6 @@ function indexPageFifthSection(){
   let isDragging = false;
  
   const {fullWidth, perSlideWidth} = getSlideMetrics();
-  console.log(fullWidth);
-   console.log(perSlideWidth);
   updateSlider();
   function updateSlider(){
     testimonySlide.forEach((s, _) =>{
@@ -264,52 +262,3 @@ function indexPageFifthSection(){
 window.addEventListener("resize", indexPageFifthSection);
 document.addEventListener("DOMContentLoaded", indexPageFifthSection);
 
-
-/*Mobile navigation functions*/
-function returnHome(){
-  const homeBtn = document.getElementById("mobile-home-button");
-  homeBtn.addEventListener("click", () =>{
-    window.location.href = "index.html";
-  });
-}
-returnHome();
-function toCoffeeStore(){
-  const coffeeBeanBtn = document.getElementById("mobile-beans-button");
-  coffeeBeanBtn.addEventListener("click", () =>{
-    window.location.href = "coffeeBeans.html";
-  });
-}
-toCoffeeStore();
-function toReservation(){
-  const reserveBtn = document.getElementById("mobile-reserve-button");
-  reserveBtn.addEventListener("click", () =>{
-    window.location.href = "reservation.html";
-  });
-}
-toReservation();
-function toUser(){
-
-}
-function burgerContent(){
-  const burgerOpen = document.getElementById("burger");
-  const burgerClose = document.getElementById("burger-close");
-  const tempContainer = document.createElement("div");
-  burgerOpen.addEventListener("click", async () =>{
-    const inputField = await fetch("signup.html");
-    const html = await inputField.text();
-    
-    tempContainer.className = "temp-container";
-    tempContainer.innerHTML = html;
-    document.body.append(tempContainer);
-    burgerOpen.style.display = "none";
-    burgerClose.style.display = "flex";
-  });
-
-  burgerClose.addEventListener("click", async () =>{
-    tempContainer.classList.toggle("hideInputField");
-    burgerOpen.style.display = "flex";
-    burgerClose.style.display = "none";
-    return;
-  });
-}
-burgerContent();
