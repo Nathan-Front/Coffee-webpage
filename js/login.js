@@ -11,7 +11,7 @@ function loginUser(){
         const userPassword = document.getElementById("loginPassword").value;
         const hashedPassword = await hashPassword(userPassword);
         if(userName === "" || hashedPassword === ""){
-            alert("Please enter username and password.");
+            alert("Please enter username/password.");
             return;
         }
         const user = userData.find(user => user.userName === userName && user.password === hashedPassword);

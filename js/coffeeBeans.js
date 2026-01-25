@@ -130,6 +130,7 @@ function itemInCart(){
             <h3>Price: $<span>${item.itemPrice}</span></h3>
         </div>
         <div class="quantity">
+            <h3>Quantity:</h3>
             <button class="minus-btn">-</button>
             <span class="item-qty">${item.itemQty}</span>
             <button class="add-btn">+</button>
@@ -543,28 +544,34 @@ addMinusQty();
 
 
 const coffeeDots = document.querySelector(".coffee-dots");
-const coffeeTotalDots = coffeeSlides.length - coffeeVisibleSlides + 1;
+let coffeeTotalDots = 0 
+if(window.innerWidth > 540){
+    coffeeTotalDots = coffeeSlides.length - coffeeVisibleSlides + 1;
+} else {
+    coffeeTotalDots = coffeeSlides.length - coffeeVisibleSlides + 4;
+}
 
 function coffeeDot(){
+    if(!coffeeDots) return;
     coffeeDots.innerHTML = "";
     for ( let i = 0; i < coffeeTotalDots; i++) {
         const dot = document.createElement("button");
 
-        dot.addEventListener("click", () =>{
+        dot.addEventListener("click", () =>{      
+            if(window.innerWidth <= 540) return; 
             coffeeCurrentIndex = i;
             updateCoffeeCarousel();
         });
        coffeeDots.appendChild(dot);
+      
     }
      updateCoffeeDot();
 }
-
 function updateCoffeeDot(){
-    if(!coffeeDots) return;
     const dots = coffeeDots.querySelectorAll("button");
     if(!dots) return;
     dots.forEach((dot, coffeeIndex) =>{
-        dot.classList.toggle("coffeeActive", coffeeIndex === coffeeCurrentIndex);
+        dot.classList.toggle("coffeeActive", coffeeIndex === coffeeCurrentIndex); 
     });
 }
 
@@ -573,4 +580,77 @@ window.addEventListener('load', () => {
   updateCoffeeSlideWidth();
   updateCoffeeCarousel();
   updateCoffeeDot();
+});
+document.addEventListener("DOMContentLoaded", coffeeDot);  
+
+function getCarouselSlideWidth(){
+    const carouselWrapper = document.querySelector(".product-sale-list-item-container");
+    const coffeeSlides = document.querySelectorAll(".product-sale-item-container");
+    const viewport = document.querySelector(".beans-carousel-viewport");
+    const slideWidth = Array.from(coffeeSlides);
+     if (!carouselWrapper || !coffeeSlides.length || !viewport) return null;
+    const slide = slideWidth[0];
+    const slideRect = slide.getBoundingClientRect();
+    const style = getComputedStyle(slide);
+    const marginLeft = parseFloat(style.marginLeft) || 0;
+    const marginRight = parseFloat(style.marginRight) || 0;
+    const perSlideWidth = slideRect.width;
+     const wrapWidth = viewport.getBoundingClientRect().width;
+    const containerWidth = getComputedStyle(carouselWrapper);
+    let gap = parseFloat(containerWidth.gap) || 0;
+
+    if(containerWidth.gap.includes("%")){  
+        gap = wrapWidth * (parseFloat(containerWidth.gap) / 100);   
+    }
+   const fullWidth = perSlideWidth + marginLeft + marginRight + gap;
+        return {perSlideWidth, fullWidth, wrapWidth};
+}
+function coffeeBeansCarouselTouch(){
+    const carouselWrapper = document.querySelector(".product-sale-list-item-container");
+    const coffeeSlides = document.querySelectorAll(".product-sale-item-container");
+    let index = 0;
+    let startX = 0;
+    let isDragging = false;
+    let currentTranslate = 0;
+    const {perSlideWidth, fullWidth, wrapWidth} = getCarouselSlideWidth();
+    if(!carouselWrapper || !coffeeSlides.length || !perSlideWidth || !fullWidth || !wrapWidth) return;
+    function updateSlider(){
+        const centerOffset = (wrapWidth - perSlideWidth) / 2;
+        const translateX = -index * fullWidth + centerOffset;
+        currentTranslate = translateX;
+        coffeeSlides.forEach((slide, i) =>{
+            slide.style.transform = `translateX(${currentTranslate}px)`;
+        });
+    }
+    carouselWrapper.addEventListener("touchstart", (e) =>{
+        startX = e.touches[0].clientX;
+        isDragging = true;}, 
+        { passive: true } 
+    );
+    carouselWrapper.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;}, 
+        { passive: true }
+    );
+    carouselWrapper.addEventListener("touchend", (e) =>{
+        if(!isDragging) return;
+        const endX = e.changedTouches[0].clientX;
+        const diff = endX - startX;
+        if(diff > 50){
+            index = index === 0 ? coffeeSlides.length - 1 : index - 1;
+        }else if (diff < -50) {
+            index = (index + 1) % coffeeSlides.length;
+        }
+        updateSlider();
+        isDragging = false;
+        updateCoffeeDot();
+        coffeeCurrentIndex = index;
+        coffeeDot();
+        
+    });
+}
+window.addEventListener("resize", coffeeBeansCarouselTouch);
+document.addEventListener("DOMContentLoaded", () => {
+    if(document.body.classList.contains("coffee-beans-page")){
+        coffeeBeansCarouselTouch();
+    }
 });
