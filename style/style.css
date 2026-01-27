@@ -985,18 +985,20 @@ blockquote{
 footer{
     display: none;
 }
+/*These below are needed for 540*/
 .input-field-container{
     position: fixed;
-    min-width: 100vw;
-    min-height: 100vh;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
     top: 0;
     left: 0;
     background-color: goldenrod;
-    overflow: hidden;
     z-index: 99;
     transform: translateX(100%);
     opacity: 0;
     transition: transform 0.6s ease, opacity 0.6s ease;
+    overflow-x: auto;
 }
 .activeInput {
     transform: translateX(0);
@@ -1005,7 +1007,8 @@ footer{
 .hideInputField{
     display: none;
 }
-.close-input-field{
+.close-input-field,
+.close-signup-form{
     width: 50px;
     height: 50px;
     margin: 5px 0 0 5px;
@@ -3144,6 +3147,109 @@ input.error-border {
 .taken.error-border {
   border: 2px solid red;
 }
+@media only screen and (max-width: 540px){
+    .sign-up-form{
+    width: 90%; /**/
+    margin: 0 auto;
+    padding-top: 0px; /**/
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    
+}
+.sign-up-form::before{
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 91%;
+    margin: 0 auto;
+    top: 5.5%;
+    border: 1px gray solid;
+    z-index: -1;
+}
+.sign-up-form> h3{
+    font-size: clamp(1.3rem, 2vw, 2rem);
+    padding-bottom: 20px;
+    width: fit-content;
+    margin-left: 2%;
+    z-index: 1;
+    background-color: unset; /**/
+}
+.sign-up-form> label{
+    padding-bottom: 0px; /**/
+    font-size: clamp(1rem, 1.4vw, 3rem);
+    width: 80%;
+    margin: 0 auto;
+}
+.sign-up-form> input{
+    width: 80%;
+    margin: 0 auto;
+    padding: 5px;
+    margin-bottom: 10px; /**/
+}
+.email-address-container,
+.password-container{
+    width: 80%;
+    margin: 0 auto;
+    position: relative;
+}
+.email-address-container> input,
+.password-container> input{
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 20px;
+}
+.toggle-password {
+    position: absolute;
+    top: 15%;
+    right: 1%;
+    cursor: pointer;
+    color: lightgray;
+}
+.submit-button-container{
+    width: 80%;
+    margin: 0 auto;
+    padding: 0px 0 50px 0; /**/
+    display: flex;
+    justify-content: space-evenly;
+}
+.submit-button-container> button{
+    padding: 5px 10px;
+    font-size: clamp(1rem, 1.4vw, 2rem);
+    border: none;
+    background-color: rgb(0, 0, 0); /**/
+    color: whitesmoke; /**/
+    border-radius: 0.25em;
+}
+.submit-button-container> button:hover{
+    cursor: pointer;
+    color: goldenrod;
+    background-color: black;
+    background-color: rgba(0,0,0, 0.8);
+    transition: 0.3s;
+}
+
+.error {
+  color: red;
+  font-size: 0.6rem;
+  position: absolute;
+  bottom: 15%;
+  left: 0;
+}
+input.error-border {
+  border: 2px solid red;
+}
+.taken {
+  color: red;
+  font-size: 0.6rem;
+  position: absolute;
+  bottom: 15%;
+  left: 0;
+}
+.taken.error-border {
+  border: 2px solid red;
+}
+}
 
 /*Login HTML*/
 .login-form{
@@ -3354,4 +3460,64 @@ input.error-border {
     background-color: rgba(0,0,0, 0.8);
     transition: 0.3s;
 }
+
+ .logged-user-container{
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: white;
+    overflow: hidden;
+    scroll-behavior: unset;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+ }
+  .close-input-field-mobile{
+    font-size: 2rem;
+    font-weight: bolder;
+    position: absolute;
+    top: 1%;
+    left: 5%;
+  }
+  .logged-user-container> h1{
+    color: black;
+    font-size: 2em;
+    margin-top: 1.5em;
+  }
+ .user-icon-mobile{
+    margin-top: 1em;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #000;
+ }
+ .logged-user-container> h2{
+    margin-top: 1em;
+ }
+ .user-icon-mobile-container{
+    width: 100vw;
+    height: auto;
+    display: flex;
+    position: relative;
+    justify-content: center;
+ }
+ .upload-image-button{
+    position: absolute;
+    width: 2em;
+    top: 70%;
+    left: 61%;
+    z-index: 999;
+ }
+ .logged-user-container> button{
+    margin-top: 1em;
+    font-size: 1.2rem;
+    padding: 5px 30px;
+    background-color: goldenrod;
+    border-radius: 0.25em;
+ }
+
 }

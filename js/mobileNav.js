@@ -1,6 +1,6 @@
 
-
 async function mobileNavFetch(){
+  if(window.innerWidth > 540) return; 
   const mobileNav = await fetch("/mobileNavigation.html");
   const navHtml =await mobileNav.text();
   document.body.insertAdjacentHTML("beforeend", navHtml);
@@ -8,10 +8,15 @@ async function mobileNavFetch(){
   toUser();
   burgerContent();
   mobileNavigationBtn();
+  toSignupForm();
 }
-mobileNavFetch();
+document.addEventListener("DOMContentLoaded", mobileNavFetch);
 
+let mobileNavBound = false;
 function mobileNavigationBtn(){
+  if(window.innerWidth > 540) return; 
+  if(mobileNavBound) return;
+  mobileNavBound = true;
   document.addEventListener("click", (e)=>{
     const homeBtn = e.target.closest("#mobile-home-button");
     if(homeBtn){
@@ -31,34 +36,141 @@ function mobileNavigationBtn(){
 }
 
 function toUser(){
+  if(window.innerWidth > 540) return;
   const userBtn = document.getElementById("mobile-user-button");
   if(!userBtn) return;
   const inputFieldContainer = document.createElement("div");
   const closeBtn = document.createElement("button");
   closeBtn.className = "close-input-field";
   closeBtn.textContent = "X";
+  
   userBtn.addEventListener("click", async () =>{
-    if(userBtn.disabled)return;
-    userBtn.disabled = true;
-    const inputField = await fetch("login.html"); //Get the login html content
-    inputFieldContainer.className = "input-field-container";
-    const html = await inputField.text(); //Convert to text to be able to display
-    inputFieldContainer.innerHTML = html;
-    const closeButtonPos = inputFieldContainer.querySelector("main");
-    closeButtonPos.prepend(closeBtn);
-    document.body.append(inputFieldContainer);
-    requestAnimationFrame(() => {
-      inputFieldContainer.offsetHeight; //forces a layout reflow, it locks in the initial state (without .activeInput)
-      inputFieldContainer.classList.add("activeInput");
-    });
+    if (document.querySelector(".logged-user-container")) return;
+     const loggedUserContainer = document.createElement("div");
+     const loggedUser = JSON.parse(localStorage.getItem("loggedInUser"));
+    /*When user is logged in*/
+    if(loggedUser){
+      loggedUserContainer.className = "logged-user-container";
+      loggedUserContainer.innerHTML = `
+      <span class="close-input-field-mobile">X</span>
+        <h1>Welcome</h1>
+        <div class="user-icon-mobile-container">
+          <img src="images/user-icon.png" alt="User Icon" class="user-icon-mobile" id="user-profile-pic"/>
+          <input type="file" id="profile-pic-upload" accept="image/*" hidden/>
+          <img src="images/mobileLogo/addCamera/camera-add-photo-svgrepo-com.svg" alt="Upload Image" class="upload-image-button" />
+        </div>
+        <h2>${loggedUser}</h2>
+        <button id="logout-button-mobile">Logout</button>
+      `;
+      document.body.append(loggedUserContainer);
+      const uploadButton = loggedUserContainer.querySelector(".upload-image-button");
+      const profilePicUpload = loggedUserContainer.querySelector("#profile-pic-upload");
+      const userProfilePic = loggedUserContainer.querySelector("#user-profile-pic");
+      /*This will make the profile pic remain even when page reloads*/
+      const users = JSON.parse(localStorage.getItem("userData")) || [];
+      const currentUser = users.find(u => u.userName === loggedUser);
+      if (currentUser?.profilePic) { //?. optional chaining to prevent errors if currentUser is undefined
+        userProfilePic.src = currentUser.profilePic;
+      }
+
+      uploadButton.addEventListener("click", () =>{
+        profilePicUpload.click();
+      });
+      profilePicUpload.addEventListener('change', ()=>{
+        const file = profilePicUpload.files[0]; //Get only one picture at a time
+        if(!file) return;
+
+        if(!file.type.startsWith('image/')){ //Check if the selected file's MIME type is not an image
+          alert('Select only an image file');
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = () =>{
+          const imageUrl = reader.result;
+          userProfilePic.src = imageUrl;
+          const user = JSON.parse(localStorage.getItem("userData")) || [];
+          const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+          if(!loggedInUser) return;
+          const userIndex = user.findIndex(u => u.userName === loggedInUser);
+          if(userIndex === -1) return;
+          user[userIndex].profilePic = imageUrl;
+          localStorage.setItem("userData", JSON.stringify(user));
+        }
+        reader.readAsDataURL(file);
+      });
+      const logoutButtonMobile = document.querySelector("#logout-button-mobile");
+      logoutButtonMobile.addEventListener("click", () =>{
+        localStorage.removeItem("loggedInUser");
+        alert("Logged out successfully");
+        loggedUserContainer.remove();
+        userBtn.disabled = false; //Need this flag to re-enable the button
+      });
+      const closeUserInfo = loggedUserContainer.querySelector(".close-input-field-mobile");
+      closeUserInfo.addEventListener("click", () =>{
+        loggedUserContainer.remove();
+        userBtn.disabled = false; //Need this flag to re-enable the button
+      });
+    /*When user is not logged in*/ 
+    }else{
+      if(document.querySelector(".input-field-container")) return; //If currently opened, do nothing
+      const inputField = await fetch("login.html"); //Get the login html content
+      inputFieldContainer.className = "input-field-container";
+      const html = await inputField.text(); //Convert to text to be able to display
+      inputFieldContainer.innerHTML = html;
+      const closeButtonPos = inputFieldContainer.querySelector("main");
+      closeButtonPos.prepend(closeBtn);
+      removeExistingFetched();
+      document.body.append(inputFieldContainer);
+      loginUser();
+      requestAnimationFrame(() => {
+        inputFieldContainer.offsetHeight; //forces a layout reflow, it locks in the initial state (without .activeInput)
+        inputFieldContainer.classList.add("activeInput");
+      });
+    }
   });
   closeBtn.addEventListener("click", () =>{
     inputFieldContainer.classList.remove("activeInput");
     setTimeout(() => { //Delay to allow CSS transition
       inputFieldContainer.remove();
-      userBtn.disabled = false;
+      userBtn.disabled = false; //Need this flag to re-enable the button
     }, 400); //This is needed to match the CSS transition duration which is 0.4s
   });
+}
+
+function toSignupForm(){
+  document.addEventListener("click", async (e) =>{
+    const userBtn = e.target.closest("#mobile-signup-form");
+    const closeBtn = document.createElement("button");
+    closeBtn.className = "close-signup-form";
+    closeBtn.textContent = "X";
+    if (!userBtn) return;
+    const signupForm = await fetch("signup.html"); //Get the signup html content
+    const signupFormContainer = document.createElement("div");
+    signupFormContainer.className = "input-field-container";
+    const html = await signupForm.text(); //Convert to text to be able to display
+    signupFormContainer.innerHTML = html;
+    const closeButtonPos = signupFormContainer.querySelector("main");
+    closeButtonPos.prepend(closeBtn);
+    removeExistingFetched();
+    document.body.append(signupFormContainer);
+    signUp();
+    requestAnimationFrame(() => {
+        signupFormContainer.offsetHeight; //forces a layout reflow, it locks in the initial state (without .activeInput)
+        signupFormContainer.classList.add("activeInput");
+      });
+    closeBtn.addEventListener("click", () =>{
+      signupFormContainer.classList.remove("activeInput");
+      setTimeout(() => { //Delay to allow CSS transition
+        signupFormContainer.remove();
+        userBtn.disabled = false; //Need this flag to re-enable the button
+      }, 400); //This is needed to match the CSS transition duration which is 0.4s
+    });
+  });
+}
+
+function removeExistingFetched() {
+  const existing = document.querySelector(".input-field-container");
+  if (existing) existing.remove();
 }
 
 function burgerContent(){

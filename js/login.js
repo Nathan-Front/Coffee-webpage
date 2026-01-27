@@ -1,19 +1,22 @@
 
-function loginUser(){
+window.loginUser = function loginUser(){
     const loginForm = document.getElementById("loginForm");
-     if (!loginForm) return;
-     
+    if (!loginForm) return;
+    if (loginForm.dataset.bound) return;
+    loginForm.dataset.bound = "true";
+    const usernameField = document.getElementById("loginName");
+    const rememberMe = document.getElementById("remember-me");
     loginForm.addEventListener("submit", async (e) =>{
+        //if (!e.target.matches("#loginForm")) return;
         e.preventDefault();
-
         const userData = JSON.parse(localStorage.getItem("userData")) || [];
         const userName = document.getElementById("loginName").value.trim();
         const userPassword = document.getElementById("loginPassword").value;
-        const hashedPassword = await hashPassword(userPassword);
-        if(userName === "" || hashedPassword === ""){
+        if(userName === "" || userPassword === ""){
             alert("Please enter username/password.");
             return;
         }
+        const hashedPassword = await hashPassword(userPassword);
         const user = userData.find(user => user.userName === userName && user.password === hashedPassword);
         if(user){  
             localStorage.setItem("loggedInUser", JSON.stringify(user.userName)); 
@@ -31,9 +34,7 @@ function loginUser(){
             return;
         }
     });
-
-    const usernameField = document.getElementById("loginName");
-    const rememberMe = document.getElementById("remember-me");
+ 
     const rememberMeStorage = JSON.parse(localStorage.getItem("rememberMe"));
     if(rememberMeStorage){
         usernameField.value = rememberMeStorage;

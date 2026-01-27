@@ -37,7 +37,7 @@
       </nav>
     </div>
     <main>
-      <form id="loginForm" class="login-form">
+      <form id="loginForm" class="login-form" novalidate>
         <h3>Sign In</h3>
         <label for="loginName">User Name</label>
         <input
@@ -65,7 +65,9 @@
 
         <div class="login-button-container">
           <button type="submit">Login</button>
-          <a href="signup.html"> Dont have account yet? </a>
+          <button type="button" id="mobile-signup-form">
+            Dont have account yet?
+          </button>
         </div>
         <label class="login-remember-me">
           <input
@@ -179,7 +181,9 @@
         </div>
       </footer>
     </main>
-    <script src="js/login.js"></script>
-    <script src="js/signup.js"></script>
+    <script src="js/hashPassword.js" defer></script>
+    <script src="js/login.js" defer></script>
+    <script src="js/signup.js" defer></script>
+    <script src="js/mobileNav.js" defer></script>
   </body>
 </html>

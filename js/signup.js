@@ -1,6 +1,6 @@
 
 
-function signUp() {
+window.signUp = function signUp() {
     const form = document.getElementById('signup-form');
   if (!form) return; 
     document.getElementById('signup-form').addEventListener('submit', async (e) => {
@@ -45,7 +45,7 @@ function signUp() {
             return;
         }
         //Password duplicate check
-        const hashedPass = await hashPassword(createPass.value); //This is the async/hash at the top
+        const hashedPass = await hashPassword(createPass.value);
         const passwordExists = userData.some(user => user.password === hashedPass);
         if (passwordExists) {
             alert('Password already taken');
@@ -62,18 +62,6 @@ function signUp() {
         
     });
 } 
-signUp();
-
-//Use Built-in API hash of the browser *This is for front-end only no server/DB
-//Does not show the exact password in the localStorage
-async function hashPassword(password) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(password);
-    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    return hashHex;
-}
 
 //email validator
 function validateEmail(email) {
