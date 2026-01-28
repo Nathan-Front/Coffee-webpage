@@ -191,7 +191,7 @@ function indexPageSecondSection(){
     }
     updateSlider();
     isDragging = false;
-  });
+  },{ passive: true } );
   
 }
 window.addEventListener("resize", indexPageSecondSection);
@@ -256,9 +256,19 @@ function indexPageFifthSection(){
     updateActiveDot();
     createDots();
     currentIndex2 = index;
-  });
+  },{ passive: true } );
   
 }
-window.addEventListener("resize", indexPageFifthSection);
-document.addEventListener("DOMContentLoaded", indexPageFifthSection);
 
+let wasMobile = null;
+function mobileDesktopInit() {
+  const isMobile = window.innerWidth <= 540;
+  if (isMobile === wasMobile) return;
+  wasMobile = isMobile;
+  if (isMobile) {
+    indexPageSecondSection();
+    indexPageFifthSection();
+  }
+}
+window.addEventListener("resize", mobileDesktopInit);
+document.addEventListener("DOMContentLoaded", mobileDesktopInit);

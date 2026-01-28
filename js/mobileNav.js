@@ -34,12 +34,12 @@ function mobileNavigationBtn(){
     }
   });
 }
-
+const inputFieldContainer = document.createElement("div");
 function toUser(){
   if(window.innerWidth > 540) return;
   const userBtn = document.getElementById("mobile-user-button");
   if(!userBtn) return;
-  const inputFieldContainer = document.createElement("div");
+  
   const closeBtn = document.createElement("button");
   closeBtn.className = "close-input-field";
   closeBtn.textContent = "X";
@@ -120,6 +120,7 @@ function toUser(){
       const closeButtonPos = inputFieldContainer.querySelector("main");
       closeButtonPos.prepend(closeBtn);
       removeExistingFetched();
+      removeExistingAboutUs()
       document.body.append(inputFieldContainer);
       loginUser();
       requestAnimationFrame(() => {
@@ -137,6 +138,7 @@ function toUser(){
   });
 }
 
+const signupFormContainer = document.createElement("div");
 function toSignupForm(){
   document.addEventListener("click", async (e) =>{
     const userBtn = e.target.closest("#mobile-signup-form");
@@ -145,13 +147,13 @@ function toSignupForm(){
     closeBtn.textContent = "X";
     if (!userBtn) return;
     const signupForm = await fetch("signup.html"); //Get the signup html content
-    const signupFormContainer = document.createElement("div");
     signupFormContainer.className = "input-field-container";
     const html = await signupForm.text(); //Convert to text to be able to display
     signupFormContainer.innerHTML = html;
     const closeButtonPos = signupFormContainer.querySelector("main");
     closeButtonPos.prepend(closeBtn);
     removeExistingFetched();
+    removeExistingAboutUs()
     document.body.append(signupFormContainer);
     signUp();
     requestAnimationFrame(() => {
@@ -167,26 +169,50 @@ function toSignupForm(){
     });
   });
 }
-
 function removeExistingFetched() {
   const existing = document.querySelector(".input-field-container");
   if (existing) existing.remove();
 }
 
+let burgerOpen;
+let burgerClose;
 function burgerContent(){
-  const burgerOpen = document.getElementById("burger");
-  const burgerClose = document.getElementById("burger-close");
-  
-  burgerOpen.addEventListener("click", () =>{
-   
+  burgerOpen = document.getElementById("burger");
+  burgerClose = document.getElementById("burger-close");
+  burgerOpen.addEventListener("click", async () =>{
+    removeExistingFetched();
+     const aboutUsContainer = document.createElement("div");
+    aboutUsContainer.className = "about-us-mobile-container";
+    const aboutUsSection = await fetch("aboutus.html");
+    const aboutUsHtml = await aboutUsSection.text();
+    aboutUsContainer.innerHTML = aboutUsHtml;
+    const mobileFooterContainer = await fetch("mobileFooter.html");
+    const mobileFooterHtml = await mobileFooterContainer.text();
+    const footerContainer = document.createElement("div");
+    footerContainer.innerHTML = mobileFooterHtml;
+    aboutUsContainer.append(...footerContainer.children)
+    document.body.append(aboutUsContainer);
+    requestAnimationFrame(() => {
+      aboutUsContainer.offsetHeight; //forces a layout reflow, it locks in the initial state (without .activeInput)
+      aboutUsContainer.classList.add("activeInput");
+    });
     burgerOpen.style.display = "none";
     burgerClose.style.display = "flex";
   });
-
   burgerClose.addEventListener("click", () =>{
-    
+    const existing = document.querySelector(".about-us-mobile-container");
+    if (!existing) return;
+    existing.classList.remove("activeInput");
+    setTimeout(() => { //Delay to allow CSS transition
+        existing.remove();
+      }, 400);
     burgerOpen.style.display = "flex";
     burgerClose.style.display = "none";
-  
   });
+}
+function removeExistingAboutUs() {
+  const existing = document.querySelector(".about-us-mobile-container");
+  if (existing) existing.remove();
+  burgerOpen.style.display = "flex";
+  burgerClose.style.display = "none";
 }
