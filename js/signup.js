@@ -53,16 +53,31 @@ window.signUp = function signUp() {
             createPass.value = '';
             return;
         }
-
         formInput.password = hashedPass; //Store hashed password instead of plain text
         userData.push(formInput);
         localStorage.setItem("userData", JSON.stringify(userData));
         alert("Account created successfully!");
-        window.location.href = "login.html";
-        
+        if(window.innerWidth <= 540){
+            openLoginForm();
+        }else{
+            window.location.href = "login.html";
+        }
     });
 } 
-
+//For mobileviewport login form opening after signup
+async function openLoginForm() {
+  removeExistingFetched();
+  removeExistingAboutUs();
+  const inputFieldContainer = document.createElement("div");
+  inputFieldContainer.className = "input-field-container";
+  const logiForm = await fetch("login.html");
+  inputFieldContainer.innerHTML = await logiForm.text();
+  document.body.append(inputFieldContainer);
+  loginUser();
+  requestAnimationFrame(() => {
+    inputFieldContainer.classList.add("activeInput");
+  });
+}
 //email validator
 function validateEmail(email) {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

@@ -114,13 +114,14 @@ function createDots(){
 function updateActiveDot(){
   const dots = dotsContainer.querySelectorAll("button");
 
-  dots.forEach((dot, index = index) =>{
-    if(window.innerWidth > 540){
-       dot.classList.toggle("active", index === currentIndex);
-    }else{
-      dot.classList.toggle("active", index === currentIndex2);
-    }
-  })
+  dots.forEach((dot, index) => {
+    dot.classList.toggle(
+      "active",
+      window.innerWidth <= 540
+        ? index === currentIndex2
+        : index === currentIndex
+    );
+  });
 }
 
 window.addEventListener('load', () => {
@@ -253,9 +254,10 @@ function indexPageFifthSection(){
     }
     updateSlider();
     isDragging = false;
-    updateActiveDot();
-    createDots();
+    
+    //createDots();
     currentIndex2 = index;
+    updateActiveDot();
   },{ passive: true } );
   
 }

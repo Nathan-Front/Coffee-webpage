@@ -34,10 +34,11 @@ function mobileNavigationBtn(){
     }
   });
 }
-const inputFieldContainer = document.createElement("div");
+
+let userBtn;
 function toUser(){
   if(window.innerWidth > 540) return;
-  const userBtn = document.getElementById("mobile-user-button");
+  userBtn = document.getElementById("mobile-user-button");
   if(!userBtn) return;
   
   const closeBtn = document.createElement("button");
@@ -45,9 +46,13 @@ function toUser(){
   closeBtn.textContent = "X";
   
   userBtn.addEventListener("click", async () =>{
-    if (document.querySelector(".logged-user-container")) return;
+    //if(formOpen) return; //Prevent multiple clicks
+    if(document.querySelector(".input-field-container")) return; //If currently opened, do nothing
+    userBtn.disabled = true; //Disable button to prevent multiple clicks
+    removeExistingAboutUs();
      const loggedUserContainer = document.createElement("div");
      const loggedUser = JSON.parse(localStorage.getItem("loggedInUser"));
+     const inputFieldContainer = document.createElement("div");
     /*When user is logged in*/
     if(loggedUser){
       loggedUserContainer.className = "logged-user-container";
@@ -112,14 +117,13 @@ function toUser(){
       });
     /*When user is not logged in*/ 
     }else{
-      if(document.querySelector(".input-field-container")) return; //If currently opened, do nothing
       const inputField = await fetch("login.html"); //Get the login html content
       inputFieldContainer.className = "input-field-container";
       const html = await inputField.text(); //Convert to text to be able to display
       inputFieldContainer.innerHTML = html;
       const closeButtonPos = inputFieldContainer.querySelector("main");
       closeButtonPos.prepend(closeBtn);
-      removeExistingFetched();
+      //removeExistingFetched();
       removeExistingAboutUs()
       document.body.append(inputFieldContainer);
       loginUser();
@@ -130,30 +134,42 @@ function toUser(){
     }
   });
   closeBtn.addEventListener("click", () =>{
-    inputFieldContainer.classList.remove("activeInput");
+    //inputFieldContainer.classList.remove("activeInput");
+    
     setTimeout(() => { //Delay to allow CSS transition
-      inputFieldContainer.remove();
+      removeExistingFetched();
       userBtn.disabled = false; //Need this flag to re-enable the button
     }, 400); //This is needed to match the CSS transition duration which is 0.4s
   });
 }
+function removeExistingUserDisplay() {
+  const existing = document.querySelector(".input-field-container");
+  if (!existing) return;
 
-const signupFormContainer = document.createElement("div");
+  existing.classList.remove("activeInput");
+  setTimeout(() => {
+    existing.remove();
+    formOpen = false;
+  }, 400);
+}
+
 function toSignupForm(){
   document.addEventListener("click", async (e) =>{
-    const userBtn = e.target.closest("#mobile-signup-form");
+    removeExistingFetched();
+    removeExistingAboutUs()
+    //removeExistingUserDisplay();
+    const toSignupForm = e.target.closest("#mobile-signup-form");
     const closeBtn = document.createElement("button");
     closeBtn.className = "close-signup-form";
     closeBtn.textContent = "X";
-    if (!userBtn) return;
+    if (!toSignupForm) return;
     const signupForm = await fetch("signup.html"); //Get the signup html content
+    const signupFormContainer = document.createElement("div");
     signupFormContainer.className = "input-field-container";
     const html = await signupForm.text(); //Convert to text to be able to display
     signupFormContainer.innerHTML = html;
     const closeButtonPos = signupFormContainer.querySelector("main");
     closeButtonPos.prepend(closeBtn);
-    removeExistingFetched();
-    removeExistingAboutUs()
     document.body.append(signupFormContainer);
     signUp();
     requestAnimationFrame(() => {
@@ -161,17 +177,22 @@ function toSignupForm(){
         signupFormContainer.classList.add("activeInput");
       });
     closeBtn.addEventListener("click", () =>{
-      signupFormContainer.classList.remove("activeInput");
       setTimeout(() => { //Delay to allow CSS transition
-        signupFormContainer.remove();
-        userBtn.disabled = false; //Need this flag to re-enable the button
-      }, 400); //This is needed to match the CSS transition duration which is 0.4s
+      removeExistingFetched();
+      userBtn.disabled = false; //Need this flag to re-enable the button
+    }, 400); 
     });
   });
 }
 function removeExistingFetched() {
-  const existing = document.querySelector(".input-field-container");
-  if (existing) existing.remove();
+   const existing = document.querySelector(".input-field-container");
+  if (!existing) return;
+
+  existing.classList.remove("activeInput");
+  setTimeout(() => {
+    existing.remove();
+    formOpen = false;
+  }, 400);
 }
 
 let burgerOpen;
@@ -181,7 +202,9 @@ function burgerContent(){
   burgerClose = document.getElementById("burger-close");
   burgerOpen.addEventListener("click", async () =>{
     removeExistingFetched();
-     const aboutUsContainer = document.createElement("div");
+    removeExistingAboutUs()
+    removeExistingUserDisplay();
+    const aboutUsContainer = document.createElement("div");
     aboutUsContainer.className = "about-us-mobile-container";
     const aboutUsSection = await fetch("aboutus.html");
     const aboutUsHtml = await aboutUsSection.text();
@@ -196,23 +219,24 @@ function burgerContent(){
       aboutUsContainer.offsetHeight; //forces a layout reflow, it locks in the initial state (without .activeInput)
       aboutUsContainer.classList.add("activeInput");
     });
+    userBtn.disabled = false;
     burgerOpen.style.display = "none";
     burgerClose.style.display = "flex";
   });
   burgerClose.addEventListener("click", () =>{
-    const existing = document.querySelector(".about-us-mobile-container");
-    if (!existing) return;
-    existing.classList.remove("activeInput");
-    setTimeout(() => { //Delay to allow CSS transition
-        existing.remove();
-      }, 400);
+    removeExistingAboutUs();
     burgerOpen.style.display = "flex";
     burgerClose.style.display = "none";
   });
 }
 function removeExistingAboutUs() {
   const existing = document.querySelector(".about-us-mobile-container");
-  if (existing) existing.remove();
+    if (!existing) return;
+    existing.classList.remove("activeInput");
+    setTimeout(() => { //Delay to allow CSS transition
+        existing.remove();
+      }, 400);
   burgerOpen.style.display = "flex";
   burgerClose.style.display = "none";
+  
 }

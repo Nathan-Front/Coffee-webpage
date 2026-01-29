@@ -60,7 +60,7 @@ function alreadyLog(){//Allow only access to login page if not logged in
             btn.addEventListener("click", () =>{
         const loggedUser = JSON.parse(localStorage.getItem("loggedInUser"));
         if(loggedUser) {
-            alert("Alreay logged in.")
+            alert("Already logged in.")
             return;
         } else {
             window.location.href = "login.html"
