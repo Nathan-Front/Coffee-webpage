@@ -286,6 +286,7 @@ function addToCartOther(){
             cartContent.cartCounter = cartContent.items.reduce((total, item) => total + item.itemQty, 0);
             localStorage.setItem("cartContent", JSON.stringify(cartContent));
             document.getElementById("cart-item-counter-display").textContent = cartContent.cartCounter; 
+            alert("Item added in the cart");
         });
     });
 }
