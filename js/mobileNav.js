@@ -1,7 +1,7 @@
 
 async function mobileNavFetch(){
   if(window.innerWidth > 540) return; 
-  const mobileNav = await fetch("/mobileNavigation.html");
+  const mobileNav = await fetch("./mobileNavigation.html");
   const navHtml =await mobileNav.text();
   document.body.insertAdjacentHTML("beforeend", navHtml);
 
@@ -60,9 +60,9 @@ function toUser(){
       <span class="close-input-field-mobile">X</span>
         <h1>Welcome</h1>
         <div class="user-icon-mobile-container">
-          <img src="images/user-icon.png" alt="User Icon" class="user-icon-mobile" id="user-profile-pic"/>
+          <img src="./images/user-icon.png" alt="User Icon" class="user-icon-mobile" id="user-profile-pic"/>
           <input type="file" id="profile-pic-upload" accept="image/*" hidden/>
-          <img src="images/mobileLogo/addCamera/camera-add-photo-svgrepo-com.svg" alt="Upload Image" class="upload-image-button" />
+          <img src="./images/mobileLogo/addCamera/camera-add-photo-svgrepo-com.svg" alt="Upload Image" class="upload-image-button" />
         </div>
         <h2>${loggedUser}</h2>
         <button id="logout-button-mobile">Logout</button>
@@ -121,7 +121,7 @@ function toUser(){
       });
     /*When user is not logged in*/ 
     }else{
-      const inputField = await fetch("login.html"); //Get the login html content
+      const inputField = await fetch("./login.html"); //Get the login html content
       inputFieldContainer.className = "input-field-container";
       const html = await inputField.text(); //Convert to text to be able to display
       inputFieldContainer.innerHTML = html;
@@ -170,7 +170,7 @@ function toSignupForm(){
     closeBtn.className = "close-signup-form";
     closeBtn.textContent = "X";
     if (!toSignupForm) return;
-    const signupForm = await fetch("signup.html"); //Get the signup html content
+    const signupForm = await fetch("./signup.html"); //Get the signup html content
     const signupFormContainer = document.createElement("div");
     signupFormContainer.className = "input-field-container";
     const html = await signupForm.text(); //Convert to text to be able to display
@@ -210,24 +210,25 @@ let burgerClose;
 function burgerContent(){
   burgerOpen = document.getElementById("burger");
   burgerClose = document.getElementById("burger-close");
+  if (!burgerOpen || !burgerClose) return;
   burgerOpen.addEventListener("click", async () =>{
     removeExistingFetched();
     removeExistingAboutUs()
     removeExistingUserDisplay();
     const aboutUsContainer = document.createElement("div");
     aboutUsContainer.className = "about-us-mobile-container";
-    const aboutUsSection = await fetch("aboutus.html");
+    const aboutUsSection = await fetch("./aboutus.html");
     const aboutUsHtml = await aboutUsSection.text();
     aboutUsContainer.innerHTML = aboutUsHtml;
     document.body.append(aboutUsContainer);
-    const barista = await fetch("service.html");
+    const barista = await fetch("./service.html");
     const HTNLtext = await barista.text();
     const parser = new DOMParser();
     const doc = parser.parseFromString(HTNLtext, "text/html");
     const baristaSection = doc.querySelector(".service-second-section-container");
     aboutUsContainer.append(baristaSection);
-    document.body.append(aboutUsContainer);
-    const mobileFooterContainer = await fetch("mobileFooter.html");
+   
+    const mobileFooterContainer = await fetch("./mobileFooter.html");
     const mobileFooterHtml = await mobileFooterContainer.text();
     const footerContainer = document.createElement("div");
     footerContainer.innerHTML = mobileFooterHtml;
@@ -236,7 +237,7 @@ function burgerContent(){
       aboutUsContainer.offsetHeight; //forces a layout reflow, it locks in the initial state (without .activeInput)
       aboutUsContainer.classList.add("activeInput");
     });
-    userBtn.disabled = false;
+    if (userBtn) userBtn.disabled = false;
     burgerOpen.style.display = "none";
     burgerClose.style.display = "flex";
   });
