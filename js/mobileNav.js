@@ -68,6 +68,10 @@ function toUser(){
         <button id="logout-button-mobile">Logout</button>
       `;
       document.body.append(loggedUserContainer);
+      requestAnimationFrame(() => {
+        loggedUserContainer.offsetHeight; //forces a layout reflow, it locks in the initial state (without .activeInput)
+        loggedUserContainer.classList.add("activeInput");
+      });
       const uploadButton = loggedUserContainer.querySelector(".upload-image-button");
       const profilePicUpload = loggedUserContainer.querySelector("#profile-pic-upload");
       const userProfilePic = loggedUserContainer.querySelector("#user-profile-pic");
@@ -112,7 +116,7 @@ function toUser(){
       });
       const closeUserInfo = loggedUserContainer.querySelector(".close-input-field-mobile");
       closeUserInfo.addEventListener("click", () =>{
-        loggedUserContainer.remove();
+        removeExistingUserDisplay();
         userBtn.disabled = false; //Need this flag to re-enable the button
       });
     /*When user is not logged in*/ 
@@ -143,7 +147,7 @@ function toUser(){
   });
 }
 function removeExistingUserDisplay() {
-  const existing = document.querySelector(".input-field-container");
+  const existing = document.querySelector(".logged-user-container");
   if (!existing) return;
 
   existing.classList.remove("activeInput");
@@ -154,12 +158,15 @@ function removeExistingUserDisplay() {
 }
 
 function toSignupForm(){
+  let closeBtn = document.createElement("button");
   document.addEventListener("click", async (e) =>{
+    const signupTrigger = e.target.closest("#mobile-signup-form");
+    if(signupTrigger){
     removeExistingFetched();
-    removeExistingAboutUs()
+    removeExistingAboutUs();
     //removeExistingUserDisplay();
     const toSignupForm = e.target.closest("#mobile-signup-form");
-    const closeBtn = document.createElement("button");
+    
     closeBtn.className = "close-signup-form";
     closeBtn.textContent = "X";
     if (!toSignupForm) return;
@@ -176,6 +183,9 @@ function toSignupForm(){
         signupFormContainer.offsetHeight; //forces a layout reflow, it locks in the initial state (without .activeInput)
         signupFormContainer.classList.add("activeInput");
       });
+      return;
+    }
+   
     closeBtn.addEventListener("click", () =>{
       setTimeout(() => { //Delay to allow CSS transition
       removeExistingFetched();
@@ -209,12 +219,19 @@ function burgerContent(){
     const aboutUsSection = await fetch("aboutus.html");
     const aboutUsHtml = await aboutUsSection.text();
     aboutUsContainer.innerHTML = aboutUsHtml;
+    document.body.append(aboutUsContainer);
+    const barista = await fetch("service.html");
+    const HTNLtext = await barista.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(HTNLtext, "text/html");
+    const baristaSection = doc.querySelector(".service-second-section-container");
+    aboutUsContainer.append(baristaSection);
+    document.body.append(aboutUsContainer);
     const mobileFooterContainer = await fetch("mobileFooter.html");
     const mobileFooterHtml = await mobileFooterContainer.text();
     const footerContainer = document.createElement("div");
     footerContainer.innerHTML = mobileFooterHtml;
     aboutUsContainer.append(...footerContainer.children)
-    document.body.append(aboutUsContainer);
     requestAnimationFrame(() => {
       aboutUsContainer.offsetHeight; //forces a layout reflow, it locks in the initial state (without .activeInput)
       aboutUsContainer.classList.add("activeInput");

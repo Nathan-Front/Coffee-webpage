@@ -866,6 +866,13 @@ footer{
         transition: transform 0.6s ease, opacity 0.6s ease;
         overflow-x: auto;
     }
+    .logged-user-container{
+        width: 100vw;
+        height: 100vh;
+        transform: translateX(100%);
+        opacity: 0;
+        transition: transform 0.6s ease, opacity 0.6s ease;
+    }
     .activeInput {
         transform: translateX(0);
         opacity: 1;
@@ -1420,9 +1427,7 @@ footer{
 }
 address{
     width: fit-content;
-    margin-top: 50px;
-    
-    
+    margin-top: 50px; 
 }
 address> a{
     color: black;
@@ -1574,8 +1579,8 @@ address> a:hover{
      padding: 2px 0;
 }
 .relaxing-container{
-    background-image: url('../images/Services/notallcoffee/cute-brown-border-with-coffee-beans-shadow-background.jpg');
-    background-size: 100%;
+    background-image: url('../images/services/fourthSection/high-angle-view-delicious-espresso-coffee-cup-white-wooden-table.jpg');
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     width: 100%;
@@ -1658,6 +1663,72 @@ address> a:hover{
 }
 .service-fourth-section-container> p{
     font-size: clamp(1rem, 1.3rem, 1.7rem);
+}
+@media only screen and (max-width: 540px){
+    .service-second-section-container{
+    width: 100vw; /**/
+    background-color: white; /**/
+    gap: 1em; /**/
+    padding-bottom: 50px;
+}
+    .service-second-section-container> h2{
+    width: 90%; /**/
+    padding: 20px 0 0 0; /**/
+    margin: 0 auto; /**/
+    color: #4F3727 /**/
+}
+.barista-list-container,
+.service-second-section-container div:nth-child(3),
+.service-second-section-container div:nth-child(5){
+    width: 100vw; /**/
+    display: flex;
+    flex-direction: column; /**/
+}
+.barista-list-container> div,
+.service-second-section-container div:nth-child(3)>div,
+.service-second-section-container div:nth-child(5)>div{
+    width: 90%; /**/
+    margin: 0 auto; /**/
+    display: flex;
+    flex-direction: column;
+    padding:  0;
+
+}
+.barista-list-container> div> h3{
+    margin-left: 0;/**/
+    padding: 10px 0; /**/
+    font-size: clamp(1.5em, 1.5vw, 2em);
+    
+}
+.barista-list-container> div> p{
+    margin-left: 0; /**/
+    padding: 5px 0;
+    font-weight: bolder;
+
+}
+.barista-list-container> div> p> span{
+    font-weight: 100;
+}
+.barista-list-container> img{
+    width: clamp(250px, 25vw, 600px);
+    height: clamp(200px, 25vw, 250px);
+    margin: auto;
+    border-radius: 1em;
+    box-shadow: 0 3px 6px #85746b;
+}
+.service-second-section-container div:nth-child(5)> div> p{
+    font-weight: 100;
+}
+.service-second-section-container div:nth-child(5)> img{
+    display: none; /**/
+}
+.email-resume{
+    margin: 20px 0 0 0; /**/
+}
+address> a{
+    padding: 10px 8px; /**/
+    margin: 0; /**/
+}
 }
 
 /*About us HTML*/
