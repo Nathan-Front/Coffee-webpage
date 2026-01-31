@@ -379,7 +379,7 @@ function cartPageCounter(){
     if(!cartContent) {
         return ;
     }
-    const count = cartContent.cartCounter || 0;
+    const count = Number(cartContent.cartCounter) || 0;
     
     const itemCount = document.getElementById("cart-item-counter");
     const itemLabel = document.getElementById("cart-item-label");
@@ -388,7 +388,9 @@ function cartPageCounter(){
 
     itemCount.textContent = count;
     itemLabel.textContent = count === 1 ? "item" : "items";
+    
 }
+document.addEventListener("DOMContentLoaded", cartPageCounter);
 
 function subTotalCalc(){
     let cartContent = JSON.parse(localStorage.getItem("cartContent"));
