@@ -493,7 +493,17 @@ document.addEventListener("DOMContentLoaded", checkoutCart);
 const carouselWrapper = document.querySelector(".product-sale-list-item-container");
 const coffeeSlides = document.querySelectorAll(".product-sale-item-container");
 
-const coffeeVisibleSlides = 4;
+let coffeeVisibleSlides;
+function initialTestimonySlide(){
+  if(window.innerWidth <= 540){
+    coffeeVisibleSlides = 1;
+  } else if(window.innerWidth <= 768){
+    coffeeVisibleSlides = 3;
+  }else{
+    coffeeVisibleSlides = 4;
+  }
+}
+initialTestimonySlide();
 let coffeeCurrentIndex = 0;
 let coffeeSlideWidth;
 
