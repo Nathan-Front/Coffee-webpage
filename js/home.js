@@ -52,7 +52,14 @@ const nextBtn = document.querySelector('.next');
 
 let visibleSlides; //Initial slider display 
 function initialTestimonySlide(){
-  visibleSlides = window.innerWidth > 540 ? 3 : 1;
+  //visibleSlides = window.innerWidth > 540 ? 3 : 1;
+  if(window.innerWidth <= 540){
+    visibleSlides = 1;
+  } else if(window.innerWidth <= 768){
+    visibleSlides = 2;
+  }else{
+    visibleSlides = 3;
+  }
 }
 initialTestimonySlide();
 document.addEventListener("DOMContentLoaded", initialTestimonySlide);
