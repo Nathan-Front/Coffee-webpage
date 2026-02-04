@@ -626,7 +626,7 @@ function coffeeBeansCarouselTouch(){
     let isDragging = false;
     let currentTranslate = 0;
     const {perSlideWidth, fullWidth, wrapWidth} = getCarouselSlideWidth();
-    if(!carouselWrapper || !coffeeSlides.length || !perSlideWidth || !fullWidth || !wrapWidth) return;
+    if(!carouselWrapper || !coffeeSlides.length || !coffeeSlides || !perSlideWidth || !fullWidth || !wrapWidth) return;
     function updateSlider(){
         const centerOffset = (wrapWidth - perSlideWidth) / 2;
         const translateX = -index * fullWidth + centerOffset;
