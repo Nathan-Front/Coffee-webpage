@@ -1,20 +1,21 @@
 function reserveSeat(){
     const reserveBtn = document.getElementById("reserve-button");
     const loginUser = JSON.parse(localStorage.getItem("loggedInUser"));
-    const loggedUser = document.querySelector(".user-name-logged");
+    //const loggedUser = document.querySelector(".user-name-logged");
     reserveBtn.addEventListener("click", () =>{
         if(!seatLoc){
             alert("Select seat");
             return;
         }
         const seatRes = JSON.parse(localStorage.getItem("reserveSeat")) || [];
-        const loggedUser = document.querySelector(".logged-in-user").textContent;
+        const loggedUserEl = document.querySelector(".logged-in-user");
+        const loggedUser = loggedUserEl.textContent;
         if(seatRes.some(user => user.user === loggedUser)){
             alert("This user had already a reservation");
             return;
         }
        document.querySelector(".form-panel-container").style.display = "flex";
-       loggedUser.textContent = loginUser;
+       loggedUserEl.textContent = loginUser;
        document.body.classList.add("no-scroll");
     });
         
@@ -33,7 +34,7 @@ function selectSeatToReserve(){
     radios.forEach(radio => {
         radio.addEventListener("change", () => {
             const li = radio.closest("li");
-            const imgEl = li.querySelector("img");
+            const imgEl = radio.closest("label").querySelector("img");
             const seat = radio.value;          
             const seatRes = JSON.parse(localStorage.getItem("reserveSeat")) || [];
            /* if (seatRes.some(item => item.seat === seat)) {
@@ -76,6 +77,7 @@ function getSelectedImg(img) {
       return img.src;
   }
 }
+ 
 function getMarkedSeat(){
     const resSeat = JSON.parse(localStorage.getItem("reserveSeat")) || [];
     if(!resSeat.length) return;
@@ -84,7 +86,7 @@ function getMarkedSeat(){
     
     if (!selectedDate || !selectedTime) return;
     
-     if (!isSaturday(selectedDate)) {
+    /* if (!isSaturday(selectedDate)) {
       alert("Reservations are only allowed on Saturdays.");
       return;
     }
@@ -92,16 +94,17 @@ function getMarkedSeat(){
     if (!isTimeAllowed(selectedTime)) {
       alert("Reservations are only available between 15:00 and 19:00.");
       return;
-    }
+    }*/
     const usedSeats = getUsedSeats(selectedDate, selectedTime);
     const radios = document.querySelectorAll(
     ".single-window-table input[type='radio'], \
      .double-seat-window-table input[type='radio'], \
      .group-center-table input[type='radio']"
     );
+    
     radios.forEach(radio =>{
         const li = radio.closest("li");
-        const imgEl = li.querySelector("img");
+        const imgEl = radio.closest("label").querySelector("img");
         const spanEl = li.querySelector("span");
         const seatId = radio.value;
         const used = usedSeats[seatId] || 0;
@@ -109,10 +112,12 @@ function getMarkedSeat(){
         const available = Math.max(0, capacity - used);
         // mark reserved
         if (used > 0) {
-            imgEl.src = getSelectedImg(imgEl);
+           imgEl.src = getSelectedImg(imgEl);
+  radio.disabled = true;
+  //li.classList.add("seat-full");
         }
         // display availability (For share tables only)
-        if (used > 0 && capacity > 1) {
+        if (used > 0 && capacity > 2) {
             spanEl.textContent = available > 0
             ? `${available} seat${available !== 1 ? "s" : ""} left` : "Full";
         }
@@ -123,7 +128,14 @@ function getMarkedSeat(){
     });
 }
 document.addEventListener("DOMContentLoaded", () => {
+const dateInput = document.querySelector("#inputReserveDate");
+  const timeInput = document.querySelector("#inputReserveTime");
+  dateInput.value = nextSaturday();
+  timeInput.value = "15:00";
   getMarkedSeat();
+   dateInput.addEventListener("change", getMarkedSeat);
+timeInput.addEventListener("change", getMarkedSeat);
+  
   selectSeatToReserve(); 
 });
 
@@ -138,15 +150,19 @@ function getSeatCapacity(radio) {
     const seatType = img?.dataset.seatType;
     return SEAT_TYPE_CAPACITY[seatType] || 1;
 }
-function getUsedSeats() {
-    const data = JSON.parse(localStorage.getItem("reserveSeat")) || {};
-    const seatMap = {};
-    data.forEach(item => {
-        const seat = item.seat;
-        const cnt = Number(item.personCnt) || 0;
-        seatMap[seat] = (seatMap[seat] || 0) + cnt;
-    });
-    return seatMap; 
+function getUsedSeats(date, time) {
+    const data = JSON.parse(localStorage.getItem("reserveSeat")) || [];
+  const seatMap = {};
+
+  data.forEach(item => {
+     if (item.dateReserve !== date) return;
+    if (item.timeReserve !== time) return;
+    const seat = item.seat;
+    const cnt = Number(item.personCnt) || 0;
+    seatMap[seat] = (seatMap[seat] || 0) + cnt;
+  });
+
+  return seatMap;
 }
 
 function isSaturday(dateStr) {
@@ -162,12 +178,12 @@ dateInput.addEventListener("change", () => {
   }
 });
 function saveReservation(reservation) {
-  if (!isSaturday(reservation.date)) {
+  if (!isSaturday(reservation.dateReserve)) {
     alert("Only Saturdays are allowed.");
     return;
   }
 
-  if (!isTimeAllowed(reservation.time)) {
+  if (!isTimeAllowed(reservation.timeReserve)) {
     alert("Only 15:00–19:00 reservations are allowed.");
     return;
   }
@@ -208,45 +224,65 @@ timeInput.addEventListener("change", () => {
 
 function reserveButton(){
     const reserveBtn = document.querySelector(".submit-reserve-button");
-    const person = document.getElementById("selectNumber");
-    const dateReservation = document.getElementById("inputReserveDate");
-    const timeReservation = document.getElementById("inputReserveTime");
-    const userContact = document.getElementById("inputContact");
-    const userEmail = document.getElementById("inputEmail");
-     const loginUser = JSON.parse(localStorage.getItem("loggedInUser"));
-    
-    reserveBtn.addEventListener("click", () =>{
-        if(loginUser === "" || loginUser === null) {
-            alert("Must be logged in to reserve seat");
-            return;
-        }
-        const usedSeats = getUsedSeats();
-        const seatId = radio.value;
-        const used = usedSeats[seatId] || 0;
-        const capacity = getSeatCapacity(radio);
-        const available = Math.max(0, capacity - used);
-        if (used > 0 && capacity < 1) {
-            alert("Reserve seats are more than the capacity");
-            return;
-        }
-        const personCount = person.value;
-        const date = dateReservation.value;
-        const time = timeReservation.value;
-        const contact = userContact.value;
-        const email = userEmail.value;
-           const reserveSeat = {
-               user: loginUser,
-               personCnt: personCount,
-               dateReserve: date,
-               timeReserve: time,
-               userContact: contact,
-               userEmail: email,
-               seat: seatLoc
-        };
-        const existing = JSON.parse(localStorage.getItem("reserveSeat")) || [];
-        existing.push(reserveSeat);
-        localStorage.setItem("reserveSeat", JSON.stringify(existing));
-    });
+  const person = document.getElementById("selectNumber");
+  const dateReservation = document.getElementById("inputReserveDate");
+  const timeReservation = document.getElementById("inputReserveTime");
+  const userContact = document.getElementById("inputContact");
+  const userEmail = document.getElementById("inputEmail");
+
+  reserveBtn.addEventListener("click", () => {
+    const loginUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+    if (!loginUser) {
+      alert("Must be logged in to reserve seat");
+      return;
+    }
+
+    if (!seatLoc) {
+      alert("Select a seat first");
+      return;
+    }
+
+    const radio = document.querySelector(
+      `input[type="radio"][value="${seatLoc}"]`
+    );
+
+    if (!radio) {
+      alert("Seat not found");
+      return;
+    }
+
+    //const usedSeats = getUsedSeats();
+    const usedSeats = getUsedSeats(
+  dateReservation.value,
+  timeReservation.value
+);
+    const capacity = getSeatCapacity(radio);
+    const used = usedSeats[seatLoc] || 0;
+    const personCount = Number(person.value);
+    const available = capacity - used;
+
+    if (personCount > available) {
+      alert("Not enough available seats");
+      return;
+    }
+
+    const reservation = {
+      user: loginUser,
+      seat: seatLoc,
+      personCnt: personCount,
+      dateReserve: dateReservation.value,
+      timeReserve: timeReservation.value,
+      userContact: userContact.value,
+      userEmail: userEmail.value
+    };
+
+    const existing = JSON.parse(localStorage.getItem("reserveSeat")) || [];
+    existing.push(reservation);
+    localStorage.setItem("reserveSeat", JSON.stringify(existing));
+
+    alert("Reservation saved successfully!");
+  });
 }
 reserveButton();
 function closeReservePanel(){

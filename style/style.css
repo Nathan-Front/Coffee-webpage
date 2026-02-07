@@ -3810,7 +3810,7 @@ address> a:hover{
 }
 .single-window-table> li> label> span{
     position: absolute;
-    top: 0;
+    top: 33%;
     left: 30%;
     padding: 0;
     margin: 0;
@@ -3845,8 +3845,8 @@ address> a:hover{
 }
 .double-seat-window-table> li> label> span{
     position: absolute;
-    top: 15%;
-    left: 30%;
+    top: 38%;
+    left: 33%;
     font-size: clamp(1.3rem, 1.4vw, 1.8rem);
 }
 .share-seat-table{
@@ -3882,8 +3882,8 @@ address> a:hover{
 }
 .four-seats> label> span{
     position: absolute;
-    top: 25%;
-    left: 48%;
+    top: 45%;
+    left: 50%;
     font-size: clamp(1.3rem, 1.4vw, 1.8rem);
 }
 .six-seats{
@@ -3901,8 +3901,8 @@ address> a:hover{
 }
 .six-seats> label> span{
     position: absolute;
-    top: 25%;
-    left: 48%;
+    top: 45%;
+    left: 50%;
     font-size: clamp(1.3rem, 1.4vw, 1.8rem);
 }
 .entrance-exit{
