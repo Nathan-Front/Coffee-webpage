@@ -77,6 +77,7 @@ function coffeeMonthAddToCart(){
             shippingFee = 0;
         }
         cartContent.items.push({
+            id: crypto.randomUUID(),
             item: coffeeMonthItem,
             itemImg: coffeeMonthItemImg,
             itemDescript: coffeeMonthItemDescript,
@@ -116,14 +117,15 @@ function itemInCart(){
     cartContent.items.forEach((item) =>{
     const itemColumn = document.createElement("li");
     itemColumn.className = "cart-item-container";
+    itemColumn.dataset.id = item.id;
         itemColumn.innerHTML = `
         <div class="item-info">
             <img src="${item.itemImg}" alt="cart item" />
             <div class="item-cart-description">
-                <h3>${item.item}</h3>
+                <h3 class="item-title-cart">${item.item}</h3>
                 <p>${item.itemDescript}</p>
                 <span>${item.itemShipping}</span>
-                <button class="delete-item-button" data-item="${item.item}">Delete</button>
+                <button class="delete-item-button" data-id="${item.id}">Delete</button>
             </div>
         </div>
         <div class="price">
@@ -191,6 +193,7 @@ function addToCart(){
             }
             if(itemContainer) {
                 cartContent.items.push({
+                    id: crypto.randomUUID(),
                     item: itemName,
                     itemImg: itemImage,
                     itemDescript: itemDescript,
@@ -205,7 +208,9 @@ function addToCart(){
             //localStorage.setItem("cartContent", JSON.stringify(cartContent))
             cartContent.cartCounter = cartContent.items.reduce((total, item) => total + (item.itemQty || 0), 0);
             localStorage.setItem("cartContent", JSON.stringify(cartContent));
-            document.getElementById("cart-item-counter-display").textContent = cartContent.cartCounter;           
+            document.getElementById("cart-item-counter-display").textContent = cartContent.cartCounter;  
+            updateCoffeeSlideWidth();
+updateCoffeeCarousel();
         });
     });
 }
@@ -270,6 +275,7 @@ function addToCartOther(){
             
             //if(containerEl){
                 cartContent.items.push({
+                    id: crypto.randomUUID(),
                     item: otherItemName,
                     itemImg: otherItemImage,
                     itemDescript: otherItemDescript,
@@ -293,59 +299,54 @@ function addToCartOther(){
 document.addEventListener("DOMContentLoaded", addToCartOther);
 
 function itemIncreaseDecrease(){   
-    const cartContainer = document.getElementById("cart-item-display-container");
+     const cartContainer = document.getElementById("cart-item-display-container");
     if (!cartContainer) return;
-    cartContainer.addEventListener("click", (e) =>{
-        if( e.target.classList.contains("add-btn") ) {
-            const itemContainer = e.target.closest(".cart-item-container");
-            if (!itemContainer) return;
-            const qtySpan = itemContainer.querySelector(".item-qty");
-            const itemName = itemContainer.querySelector("h3").textContent;
-            const cartContent = JSON.parse(localStorage.getItem("cartContent"));
-            if(!cartContent) return;
-            const itemData = cartContent.items.find(item => item.item === itemName);
-            if(!itemData) return;
-            itemData.itemQty = Number(qtySpan.textContent) + 1;
-            itemData.itemSubTotal = (itemData.itemQty * itemData.itemPrice).toFixed(2);
-            qtySpan.textContent = itemData.itemQty;
-            let totalSpan = itemContainer.querySelector(".total-display");
-            if(totalSpan) {
-                totalSpan.textContent = itemData.itemSubTotal;
-            }
-            cartContent.cartCounter = cartContent.items.reduce((total, item) => total + (item.itemQty || 0), 0);
-            localStorage.setItem("cartContent", JSON.stringify(cartContent));
-            document.getElementById("cart-item-counter").textContent =  cartContent.cartCounter;
-            
+
+    cartContainer.addEventListener("click", (e) => {
+        const itemContainer = e.target.closest(".cart-item-container");
+        if (!itemContainer) return;
+
+        const id = itemContainer.dataset.id;
+        if (!id) return;
+
+        let cartContent = JSON.parse(localStorage.getItem("cartContent"));
+        if (!cartContent || !Array.isArray(cartContent.items)) return;
+
+        const itemData = cartContent.items.find(item => item.id === id);
+        if (!itemData) return;
+
+        const qtySpan = itemContainer.querySelector(".item-qty");
+        const totalSpan = itemContainer.querySelector(".total-display");
+
+        if (e.target.classList.contains("add-btn")) {
+            itemData.itemQty += 1;
         }
-        if( e.target.classList.contains("minus-btn")  ) {
-            const itemContainer = e.target.closest(".cart-item-container");
-            if (!itemContainer) return;
-            const qtySpan = itemContainer.querySelector(".item-qty");
-            const itemName = itemContainer.querySelector("h3").textContent;           
-            if(qtySpan.textContent > 1){
-                 const cartContent = JSON.parse(localStorage.getItem("cartContent"));
-                if(!cartContent) return;
-                const itemData = cartContent.items.find(item => item.item === itemName);
-                if(!itemData) return;
-                itemData.itemQty = Number(qtySpan.textContent) - 1;             
-                itemData.itemSubTotal = (itemData.itemSubTotal - itemData.itemPrice).toFixed(2);
-                qtySpan.textContent = itemData.itemQty;
-                let totalSpan = itemContainer.querySelector(".total-display");
-                if(totalSpan) {
-                    totalSpan.textContent = itemData.itemSubTotal;
-                }
-                cartContent.cartCounter = cartContent.items.reduce((total, item) => total + (item.itemQty || 0), 0);
-                localStorage.setItem("cartContent", JSON.stringify(cartContent));
-                document.getElementById("cart-item-counter").textContent =  cartContent.cartCounter;
-                
-            }   
+
+        if (e.target.classList.contains("minus-btn")) {
+            if (itemData.itemQty <= 1) return;
+            itemData.itemQty -= 1;
         }
-        displaySubTotal(); 
-        displayShipFeeTotal(); 
-        displayGrandTotal();
+
+        itemData.itemSubTotal = (itemData.itemQty * itemData.itemPrice).toFixed(2);
+
+        qtySpan.textContent = itemData.itemQty;
+        totalSpan.textContent = itemData.itemSubTotal;
+
+        cartContent.cartCounter = cartContent.items.reduce(
+            (total, item) => total + item.itemQty, 
+            0
+        );
+
+        localStorage.setItem("cartContent", JSON.stringify(cartContent));
+
+        document.getElementById("cart-item-counter").textContent = cartContent.cartCounter;
+
+        displaySubTotal();
+        displayShipFeeTotal();
         displayTax();
+        displayGrandTotal();
         cartPageCounter();
-    });   
+    });
 }
 window.addEventListener("DOMContentLoaded", itemIncreaseDecrease);
 
@@ -355,13 +356,14 @@ function deleteFromCart(){
     cartContainer.addEventListener("click", (e) =>{
         const btn = e.target.closest(".delete-item-button");
         if(!btn) return;
-        const itemName = btn.dataset.item;
+        //const itemName = btn.dataset.item;
         let cartContent = JSON.parse(localStorage.getItem("cartContent"));
         if (!cartContent || typeof cartContent !== "object") return;
         if (!Array.isArray(cartContent.items)) {
             cartContent.items = [];
         }
-        cartContent.items = cartContent.items.filter(item => item.item !== itemName);
+        const id = btn.dataset.id;
+        cartContent.items = cartContent.items.filter(item => item.id !== id);
         cartContent.cartCounter = cartContent.items.reduce((total, item) => total + (item.itemQty || 0), 0); 
         localStorage.setItem("cartContent", JSON.stringify(cartContent));
         document.getElementById("cart-item-counter").textContent =  cartContent.cartCounter;
@@ -631,9 +633,10 @@ function coffeeBeansCarouselTouch(){
         const centerOffset = (wrapWidth - perSlideWidth) / 2;
         const translateX = -index * fullWidth + centerOffset;
         currentTranslate = translateX;
-        coffeeSlides.forEach((slide, i) =>{
+        /*coffeeSlides.forEach((slide, i) =>{
             slide.style.transform = `translateX(${currentTranslate}px)`;
-        });
+        });*/
+        carouselWrapper.style.transform = `translateX(${currentTranslate}px)`;
     }
     carouselWrapper.addEventListener("touchstart", (e) =>{
         startX = e.touches[0].clientX;
@@ -666,4 +669,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if(document.body.classList.contains("coffee-beans-page")){
         coffeeBeansCarouselTouch();
     }
+});
+window.addEventListener("resize", () => {
+  initialTestimonySlide();
+  updateCoffeeSlideWidth();
+  updateCoffeeCarousel();
 });
