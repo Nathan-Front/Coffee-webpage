@@ -3077,245 +3077,47 @@ body.no-scroll {
 }
 @media (min-width: 541px) and (max-width: 768px){
     .single-seat-window{
-        display: flex;
-        justify-content: center;
-        padding-top: 20px; /**/
-    }
-    .single-window-table{
-        display: flex;
-        justify-content: center;
-        gap: clamp(0.5rem, 2vw, 2rem);
-    }
-    .single-window-table> li> label> img{
-        width: clamp(60px, 9vw, 170px);
-        height: clamp(50px, 7vw, 140px);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .single-window-table> li> label> input{
-        display: none;
-    }
-    .single-window-table> li{
-        position: relative;
+        padding-top: 20px;
     }
     .single-window-table> li> label> span{
-        position: absolute;
         top: 0;
-        left: 25%; /**/
-        padding: 0;
-        margin: 0;
-        font-size: clamp(1.1rem, 1.4vw, 1.8rem); /**/
-    }
-    .multi-seat-container{
-        display: flex;
-    }
-    .double-seat-window{
-        display: flex;
-        align-items: center;
-        padding-left: 20px;
-    }
-    .double-seat-window> h3{
-        writing-mode: vertical-rl;
-        text-orientation: upright;
+        left: 25%; 
+        font-size: clamp(1.1rem, 1.4vw, 1.8rem); 
     }
     .double-seat-window-table{
-        display: flex;
-        flex-direction: column;
-        gap: 10px;  /**/
+        gap: 10px;  
         margin: 0;
-        padding: 0 0 0 10px; /**/
-    }
-    .double-seat-window-table> li{
-        position: relative;
+        padding: 0 0 0 10px; 
     }
     .double-seat-window-table> li> label> img{
-        width: clamp(58px, 7vw, 150px); /**/
-        height: clamp(74px, 8vw, 180px); /**/
-    }
-    .double-seat-window-table> li> label> input{
-        display: none;
+        width: clamp(58px, 7vw, 150px); 
+        height: clamp(74px, 8vw, 180px); 
     }
     .double-seat-window-table> li> label> span{
-        position: absolute;
         top: 15%;
         left: 20%;
-        font-size: clamp(1.1rem, 1.4vw, 1.8rem); /**/
-    }
-    .share-seat-table{
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        position: relative;
+        font-size: clamp(1.1rem, 1.4vw, 1.8rem); 
     }
     .share-seat-table> h3{
-        position: absolute;
-        top: 45%; /**/
-        left: 40%; /**/
-        font-size: clamp(1.5rem, 1.6vw, 2rem);
+        top: 45%; 
+        left: 40%; 
     }
     .group-center-table{
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr 1fr;
-        flex-grow: 1;
-        padding: 0; /**/
-    }
-    .four-seats{
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .four-seats> label> img{
-        width: clamp(150px, 30vw, 400px);
-        height: clamp(100px, 20vw, 300px);
-    }
-    .four-seats> label> input{
-        display: none;
+        padding: 0; 
     }
     .four-seats> label> span{
-        position: absolute;
         top: 25%;
-        left: 47%; /**/
-        font-size: clamp(1.3rem, 1.4vw, 1.8rem);
-    }
-    .six-seats{
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .six-seats> label> img{
-        width: clamp(150px, 30vw, 400px);
-        height: clamp(100px, 20vw, 300px);
-    }
-    .six-seats> label> input{
-        display: none;
+        left: 47%; 
     }
     .six-seats> label> span{
-        position: absolute;
         top: 25%;
-        left: 47%; /**/
-        font-size: clamp(1.3rem, 1.4vw, 1.8rem);
-    }
-    .entrance-exit{
-        display: flex;
-        justify-content: end;
-        padding-bottom: 30px;
-        position: relative;
-        width: 100%;
-    }
-    .entrance-exit> button{
-        position: absolute;
-        background-color: goldenrod;
-        font-size: clamp(1rem, 2.5vw, 3rem);
-        padding: 5px 20px;
-        left: 40%;
-        color: black;
-        border-radius: 0.25em;
-    }
-    .entrance-exit> button:hover{
-        color: goldenrod;
-        background-color: black;
-        background-color: rgba(0,0,0, 0.8);
-        transition: 0.3s;
-        cursor: pointer;
-    }
-    .entrance-exit> h3{
-         font-size: clamp(1rem, 2.3vw, 3rem);
-         margin-right: 30px;
+        left: 47%; 
     }
     .notice-section{
-        background-color: goldenrod;
-        padding: 20px 0; /**/
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
+        padding: 20px 0; 
     }
     .notice-section> *{
-        margin: 0 10px 0 20px; /**/
-    }
-    .notice-section> p> a{
-        color: white;
-    }
-    .single-window-table> li> label:hover,
-    .double-seat-window-table> li> label:hover,
-    .group-center-table> li> label:hover{
-        cursor: pointer;
-        font-weight: bolder;
-        color: goldenrod;
-    }
-    .seat-full {
-        opacity: 0.5;
-        pointer-events: none;
-    }
-
-    .group-center-table span {
-        display: block;
-        font-size: 0.8rem;
-        color: #000000;
-    }
-    body.no-scroll {
-      overflow: hidden;
-    }
-    .form-panel-container{
-        width: 100vw;
-        height: 100vh;
-        padding-bottom: 1em;
-        display: none;
-        flex-direction: column;
-        justify-content: center;
-        grid-gap: 0;
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: rgba(0, 0, 0, 0.6);
-        color: whitesmoke;
-        z-index: 9;
-        animation: reserve 300ms ease-in-out;  
-        transform: translate(50% 50%);
-    }
-    @keyframes reserve {
-        from{
-            top: -100px;
-        }
-        to{
-            top: 0;
-        }
-    }
-    .user-name-logged{
-        width: 50%;
-        margin: 0 auto;
-        padding: 0 0 30px 0;
-    }
-    #reserveForm{
-        width: 50%;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        padding: 0 1em 1em 1em;
-        color: black;
-        background-color: white;
-        z-index: 999;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    }
-    #reserveForm> label{
-        padding-top: 1em;
-    }
-    .reserve-button-container{
-        width: 100%;
-        display: flex;
-    }
-    .submit-reserve-button,
-    .close-reserve-button{
-        width: 30%;
-        margin: 0 auto;
-        background-color: goldenrod;
-        border: none;
-        padding: 10px 0;
-        border-radius: 0.25em;
-        box-shadow: 2px 3px 6px #85746b;
+        margin: 0 10px 0 20px; 
     }
 }
 
