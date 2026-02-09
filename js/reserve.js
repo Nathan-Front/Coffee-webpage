@@ -1,7 +1,7 @@
 function reserveSeat(){
     const reserveBtn = document.getElementById("reserve-button");
     const loginUser = JSON.parse(localStorage.getItem("loggedInUser"));
-    //const loggedUser = document.querySelector(".user-name-logged");
+    const userReservationEl = document.querySelector(".user-name-logged");
     reserveBtn.addEventListener("click", () =>{
         if(!seatLoc){
             alert("Select seat");
@@ -16,6 +16,10 @@ function reserveSeat(){
         }
        document.querySelector(".form-panel-container").style.display = "flex";
        loggedUserEl.textContent = loginUser;
+       userReservationEl.textContent = loginUser;
+       if(!loginUser){
+        userReservationEl.textContent = "Guest";
+       }
        document.body.classList.add("no-scroll");
     });
         
